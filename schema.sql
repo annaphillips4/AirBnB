@@ -3,7 +3,8 @@ CREATE TABLE `users` (
   `firstName` varchar(255) NOT NULL,
   `lastName` varchar(255) NOT NULL,
   `email` varchar(255) UNIQUE NOT NULL,
-  `username` varchar(255) UNIQUE NOT NULL
+  `username` varchar(255) UNIQUE NOT NULL,
+  `password` varchar(255) NOT NULL
 );
 
 CREATE TABLE `spots` (
@@ -12,12 +13,12 @@ CREATE TABLE `spots` (
   `city` varchar(255),
   `state` varchar(255),
   `country` varchar(255),
-  `lat` decimal(10, 7),
-  `lng` decimal(10, 7),
+  `lat` decimal(10,7),
+  `lng` decimal(10,7),
   `name` varchar(255),
   `description` blob,
   `price` decimal NOT NULL,
-  `avgRating` decimal(2, 1),
+  `avgRating` decimal(2,1),
   `previewImage` integer,
   `ownerId` integer
 );
