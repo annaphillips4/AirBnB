@@ -4,7 +4,7 @@ CREATE TABLE `users` (
   `lastName` varchar(255) NOT NULL,
   `email` varchar(255) UNIQUE NOT NULL,
   `username` varchar(255) UNIQUE NOT NULL,
-  `password` varchar(255) NOT NULL
+  `hashedPassword` varchar(255) NOT NULL
 );
 
 CREATE TABLE `spots` (
@@ -13,12 +13,12 @@ CREATE TABLE `spots` (
   `city` varchar(255),
   `state` varchar(255),
   `country` varchar(255),
-  `lat` decimal(10,7),
-  `lng` decimal(10,7),
+  `lat` decimal,
+  `lng` decimal,
   `name` varchar(255),
   `description` blob,
   `price` decimal NOT NULL,
-  `avgRating` decimal(2,1),
+  `avgRating` decimal,
   `previewImage` integer,
   `ownerId` integer
 );
@@ -27,16 +27,16 @@ CREATE TABLE `images` (
   `id` integer PRIMARY KEY,
   `url` varchar(255) NOT NULL,
   `preview` boolean,
-  `spotId` integer
+  `spotId` integer,
+  `reviewId` integer
 );
 
 CREATE TABLE `reviews` (
   `id` integer PRIMARY KEY,
-  `review` blob,
-  `stars` integer NOT NULL,
   `userId` integer,
   `spotId` integer,
-  `reviewImages` integer
+  `review` blob,
+  `stars` integer NOT NULL
 );
 
 CREATE TABLE `bookings` (
@@ -57,8 +57,8 @@ ALTER TABLE `reviews` ADD FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
 
 ALTER TABLE `reviews` ADD FOREIGN KEY (`spotId`) REFERENCES `spots` (`id`);
 
-ALTER TABLE `reviews` ADD FOREIGN KEY (`reviewImages`) REFERENCES `images` (`id`);
-
 ALTER TABLE `bookings` ADD FOREIGN KEY (`spotId`) REFERENCES `spots` (`id`);
 
 ALTER TABLE `bookings` ADD FOREIGN KEY (`userId`) REFERENCES `users` (`id`);
+
+ALTER TABLE `images` ADD FOREIGN KEY (`reviewId`) REFERENCES `reviews` (`id`);
