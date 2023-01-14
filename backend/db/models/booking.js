@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     endDate: {
       type: DataTypes.DATE,
       validate: {
-        isAfter: startDate
+        // check if after startDate !TODO
       }
     },
   }, {

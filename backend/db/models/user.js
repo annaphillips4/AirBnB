@@ -3,7 +3,7 @@ const {
   Model,
   Validator
 } = require('sequelize');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     // Return info safe for JWT
@@ -11,13 +11,16 @@ module.exports = (sequelize, DataTypes) => {
       const { id, firstName, lastName, username, email } = this;
       return { id, firstName, lastName, username, email };
     }
+
     // Returns true when same as hashed password
     validatePassword(password) {
       return bcrypt.compareSync(password, this.hashedPassword.toString());
     }
+
     static getCurrentUserById(id) {
       return User.scope("currentUser").findByPk(id);
     }
+
     static async login({ credential, password }) {
       const { Op } = require('sequelize');
       const user = await User.scope('loginUser').findOne({
@@ -32,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         return await User.scope("currentUser").findByPk(user.id);
       }
     }
+
     static async signup({ firstName, lastName, email, username, password}) {
       const hashedPassword = bcrypt.hashSync(password);
       const user = await User.create({
@@ -43,6 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       return await User.scope("currentUser").findByPk(user.id);
     }
+
     static associate(models) {
       // define association here
     }
