@@ -25,13 +25,15 @@ module.exports = (sequelize, DataTypes) => {
     startDate: {
       type: DataTypes.DATE,
       validate: {
-        // check if after today !TODO
+        isDate: true,
+        isAfter: //get current date
       }
     },
     endDate: {
       type: DataTypes.DATE,
       validate: {
-        // check if after startDate !TODO
+        isDate: true,
+        isAfter: this.startDate,
       }
     },
   }, {
