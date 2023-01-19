@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Booking.belongsTo(models.Spot, { foreignKey: 'spotId'} ),
+      Booking.belongsTo(models.User, { foreignKey: 'userId'} )
     }
   }
   Booking.init({
@@ -26,18 +27,29 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATE,
       validate: {
         isDate: true,
-        isAfter: //get current date
+        afterToday(value) {
+          const today = new Date()
+          if (value < today) {
+            throw new Error("Bookings cannot be made for past dates.")
+          }
+        }
       }
     },
     endDate: {
       type: DataTypes.DATE,
       validate: {
         isDate: true,
-        isAfter: this.startDate,
       }
     },
   }, {
     sequelize,
+    validate: {
+      endAfterStart(value) {
+        if (value < this.startDate) {
+          throw new Error("End date must be after start date.")
+        }
+      }
+    },
     modelName: 'Booking',
   });
   return Booking;
