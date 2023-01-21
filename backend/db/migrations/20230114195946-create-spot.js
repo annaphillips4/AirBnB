@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      county: {
+      country: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -38,7 +38,7 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.BLOB,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       price: {
