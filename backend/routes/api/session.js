@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { User, Spot } = require('../../db/models');
+const { User, Spot, Review, Image } = require('../../db/models');
 
 const router = express.Router();
 
@@ -18,8 +18,6 @@ const validateLogin = [
     .withMessage('Please provide a password.'),
   handleValidationErrors
 ];
-
-
 
 // Log in
 router.post(
@@ -69,15 +67,34 @@ router.get(
     }
 );
 
-
 // Get all Spots owned by the Current User
-router.get('/spots', restoreUser, async (req, res) => {
+router.get('/spots', requireAuth, async (req, res) => {
   const { user } = req;
   if (user) {
-    const userId = user.id;
-    const spots = await Spot.findAll( { where: { ownerId: userId } } )
-    res.json({spots})
+    // const userId = user.id;
+    const spots = await Spot.findAll( { where: { ownerId: req.user.id } } )
+    res.json({ spots })
   } else return res.json({ user: null })
+})
+
+// Get all Reviews of the Current User
+router.get('/reviews', requireAuth, async (req, res) => {
+  const { user } = req;
+  if (user) {
+    const reviews = await Review.findAll( {
+      attributes: [ 'id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'],
+      include: [{
+        model: User,
+        attributes: ['id', 'firstName', 'lastName']
+      }, {
+        model: Spot,
+      }, {
+        model: Image,
+        attributes: ['id','url']
+      }],
+      where: { userId: req.user.id } } )
+    res.json({ reviews })
+  }
 })
 
 module.exports = router;

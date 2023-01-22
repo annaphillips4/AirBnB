@@ -75,24 +75,22 @@ router.get('/:spotId', async (req, res) => {
             {
                 model: Review,
                 attributes: []
+            }, {
+                model: User,
+                as: 'Owner',
+                attributes: ['id', 'firstName', 'lastName'],
             }
         ]
     })
-    const owner = await User.findByPk(spot.ownerId, {
-        attributes: ['id', 'firstName', 'lastName'],
-    })
+
     const spotImages = await Image.findAll({
         attributes: ['id', 'url', 'preview'],
         where: {
             spotId: req.params.spotId
         }
     })
-    // !!! append spotimages and owner into spot object *************************
-    const spotObj = {
-        spot,
-        SpotImages: spotImages,
-        Owner: owner
-    }
+    spot.dataValues.SpotImages = spotImages
+
     if (spot.id === null) {
         const e = new Error("Couldn't find a Spot with the specified id")
         const errorObj = {
@@ -101,12 +99,12 @@ router.get('/:spotId', async (req, res) => {
         }
         return res.json(errorObj)
     }
-    return res.json(spotObj)
+
+    return res.json(spot)
 })
 
 // Create a spot
-router.post(
-    '/',
+router.post('/',
     requireAuth,
     validateSpot,
     async (req, res) => {
@@ -132,22 +130,50 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
         }
         return res.json(errorObj)
     }
-    if (spot.ownerId === user.id) {
+    if (spot.ownerId === req.user.id) {
         const { url, preview } = req.body
         const newImage = await Image.create({
             url, preview, spotId: spot.id
         })
         const checkImage = await Image.findOne({
+            attributes: [ 'id' , 'url' , 'preview' ],
             where: { url: url}
         })
-        // !!! should only return id url preview ************************************
         return res.json(checkImage)
     }
 })
 
+// Get all Reviews by a Spot's id
+router.get('/:spotId/reviews', async (res, req) => {
+    const reviews = await Reviews.findAll({
+        attributes: ['id', 'userId', 'spotId', 'review'],
+        where: {
+            spotId: req.params.spotId
+        }
+    })
+})
+
 // Edit a Spot
-router.post('/:spotId', requireAuth, async (req, res) => {
-    
+router.put('/:spotId',
+    requireAuth,
+    validateSpot,
+    async (req, res) => {
+        const spot = await Spot.findByPk(req.params.spotId)
+        if (!spot || spot.ownerId !== req.user.id) {
+            const e = new Error("Couldn't find a Spot with the specified id")
+            const errorObj = {
+                message: `Spot couldn't be found`,
+                statusCode: 404
+            }
+            return res.json(errorObj)
+        }
+        const { address, city, state, country, lat, lng, name, description, price } = req.body
+        if (spot.ownerId === req.user.id) {
+            spot.set({ address, city, state, country, lat, lng, name, description, price })
+            await spot.update()
+            return res.json(spot)
+        }
+
 })
 
 // Delete a spot
