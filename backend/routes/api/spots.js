@@ -144,13 +144,63 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 })
 
 // Get all Reviews by a Spot's id
-router.get('/:spotId/reviews', async (res, req) => {
-    const reviews = await Reviews.findAll({
-        attributes: ['id', 'userId', 'spotId', 'review'],
+router.get('/:spotId/reviews', async (req, res) => {
+    const spot = await Spot.findOne({
+        where: {
+            id: req.params.spotId
+        }
+    })
+    if (!spot) {
+        const e = new Error("Couldn't find a Spot with the specified id")
+        const errorObj = {
+            message: `Spot couldn't be found`,
+            statusCode: 404
+        }
+        return res.json(errorObj)
+    }
+    const Reviews = await Review.findAll({
+        attributes: ['id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'],
+        include: [{
+            model:User,
+            attributes: ['id', 'firstName', 'lastName']
+        }, {
+            model: Image,
+            // as: 'ReviewImages',
+            attributes: ['id', 'url']
+        }, {
+            model: Spot,
+        }],
         where: {
             spotId: req.params.spotId
         }
     })
+    return res.json({Reviews})
+})
+
+// Create a Review for a Spot based on the Spot's id
+router.post('/:spotId/reviews', requireAuth, async (req, res) => {
+    const spot = await Spot.findOne({ where: { id: req.params.spotId } } )
+
+    // Error if spot doesn't exist
+    if (!spot) {
+        const e = new Error("Couldn't find a Spot with the specified id")
+        const errorObj = {
+            message: `Spot couldn't be found`,
+            statusCode: 404
+        }
+        return res.json(errorObj)
+    }
+
+    // Error if review already exists from current user
+    const review = await Review.findOne({ where: { userId: req.user.id } } )
+    if(review) {
+        const e = new Error("Review from the current user already exists for the Spot")
+        const errorObj = {
+            message: `User already has a review for this spot`,
+            statusCode: 403
+        }
+        return res.json(errorObj)
+    }
 })
 
 // Edit a Spot
