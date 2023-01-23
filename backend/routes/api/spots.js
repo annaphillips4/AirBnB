@@ -36,6 +36,7 @@ const validateSpot = [
     check('name')
       .exists({ checkFalsy: true })
       .notEmpty()
+      .isLength( { max: 50 } )
       .withMessage("Name must be less than 50 characters"),
     check('description')
       .exists({ checkFalsy: true })
@@ -47,6 +48,19 @@ const validateSpot = [
       .withMessage("Price per day is required"),
     handleValidationErrors
   ];
+
+  const validateReview = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .withMessage("Review text is required"),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .notEmpty()
+        .isInt({ min: 1, max: 5})
+        .withMessage("Stars must be an integer from 1 to 5"),
+    handleValidationErrors
+  ]
 
 // Get all Spots
 router.get('/', async (req, res) => {
@@ -178,29 +192,43 @@ router.get('/:spotId/reviews', async (req, res) => {
 })
 
 // Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', requireAuth, async (req, res) => {
-    const spot = await Spot.findOne({ where: { id: req.params.spotId } } )
+router.post('/:spotId/reviews',
+    requireAuth,
+    validateReview,
+    async (req, res) => {
+        const spot = await Spot.findOne({ where: { id: req.params.spotId } } )
 
-    // Error if spot doesn't exist
-    if (!spot) {
-        const e = new Error("Couldn't find a Spot with the specified id")
-        const errorObj = {
-            message: `Spot couldn't be found`,
-            statusCode: 404
+        // Error if spot doesn't exist
+        if (!spot) {
+            const e = new Error("Couldn't find a Spot with the specified id")
+            const errorObj = {
+                message: `Spot couldn't be found`,
+                statusCode: 404
+            }
+            return res.json(errorObj)
         }
-        return res.json(errorObj)
-    }
 
-    // Error if review already exists from current user
-    const review = await Review.findOne({ where: { userId: req.user.id } } )
-    if(review) {
-        const e = new Error("Review from the current user already exists for the Spot")
-        const errorObj = {
-            message: `User already has a review for this spot`,
-            statusCode: 403
+        // Error if review already exists from current user
+        const findReview = await Review.findOne({
+            where: {
+                userId: req.user.id,
+                spotId: spot.id
+            }
+        })
+        if(findReview) {
+            const e = new Error("Review from the current user already exists for the Spot")
+            const errorObj = {
+                message: `User already has a review for this spot`,
+                statusCode: 403
+            }
+            return res.json(errorObj)
         }
-        return res.json(errorObj)
-    }
+
+        const { review, stars } = req.body
+        const newReview = await Review.create({
+            review, stars, spotId: spot.id, userId: req.user.id
+        })
+        return res.json(newReview)
 })
 
 // Edit a Spot
@@ -223,7 +251,6 @@ router.put('/:spotId',
             await spot.update()
             return res.json(spot)
         }
-
 })
 
 // Delete a spot
