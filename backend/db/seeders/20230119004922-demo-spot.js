@@ -21,7 +21,7 @@ module.exports = {
         description: 'This is a description for a spot that really does exist.',
         price: 50,
         avgRating: 3.8,
-        previewImage: null,
+        previewImage: 1,
         ownerId: 1,
       },
       {
@@ -35,7 +35,7 @@ module.exports = {
         description: 'Lots of knobs and boney spikes on the roof. Vegetarians only.',
         price: 150,
         avgRating: 4.9,
-        previewImage: null,
+        previewImage: 2,
         ownerId: 1,
       },
       {
@@ -49,7 +49,7 @@ module.exports = {
         description: `I mean, I think you should stay here. Whadda ya got to lose, right?`,
         price: 20,
         avgRating: 2.1,
-        previewImage: null,
+        previewImage: 3,
         ownerId: 2,
       },
     ])

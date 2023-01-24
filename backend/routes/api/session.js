@@ -1,7 +1,7 @@
 const express = require('express');
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { User, Spot, Review, Image } = require('../../db/models');
+const { User, Spot, Review, Image, Booking, sequelize } = require('../../db/models');
 
 const router = express.Router();
 
@@ -72,7 +72,20 @@ router.get('/spots', requireAuth, async (req, res) => {
   const { user } = req;
   if (user) {
     // const userId = user.id;
-    const spots = await Spot.findAll( { where: { ownerId: req.user.id } } )
+    const spots = await Spot.findAll( {
+      attributes: {
+        include: ['createdAt', 'updatedAt',
+        // [sequelize.fn("AVG", sequelize.col("Reviews.stars", {
+        //             where: { spotId: req.params.spotId }
+        //         })), "avgRating"],
+        ]
+      },
+      include: [{
+        model: Review,
+        attributes: [],
+      }],
+      where: { ownerId: req.user.id }
+    } )
     res.json({ spots })
   } else return res.json({ user: null })
 })
@@ -81,7 +94,7 @@ router.get('/spots', requireAuth, async (req, res) => {
 router.get('/reviews', requireAuth, async (req, res) => {
   const { user } = req;
   if (user) {
-    const reviews = await Review.findAll( {
+    const Reviews = await Review.findAll( {
       attributes: [ 'id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'],
       include: [{
         model: User,
@@ -93,7 +106,19 @@ router.get('/reviews', requireAuth, async (req, res) => {
         attributes: ['id','url']
       }],
       where: { userId: req.user.id } } )
-    res.json({ reviews })
+    return res.json({ Reviews })
+  }
+})
+
+// Get all of the Current User's Bookings
+router.get('/bookings', requireAuth, async (req, res) => {
+  const { user } = req
+  if (user) {
+    const bookings = await Booking.findAll({
+      where: { userId: user.id },
+      include: [{ model: Spot }]
+    })
+    return res.json(bookings)
   }
 })
 
