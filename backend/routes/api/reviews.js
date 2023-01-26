@@ -85,6 +85,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
 // Delete a Review Image
 router.delete('/:reviewId/images/:imageId', requireAuth, async (res, req) => {
     const image = await Image.findByPk({ where: { id: req.params.imageId } })
+    // Error if image doesn't exist
     if (!image || image.userId !== req.user.id) {
         const e = new Error("Couldn't find a Reveiw Image with the specified id")
         const errorObj = {
@@ -93,6 +94,7 @@ router.delete('/:reviewId/images/:imageId', requireAuth, async (res, req) => {
         }
         return res.json(errorObj)
     }
+    // If the image is the req.user's- delete
     if (image.userId === req.user.id) {
         await image.destroy();
         const successObj = {
@@ -106,6 +108,7 @@ router.delete('/:reviewId/images/:imageId', requireAuth, async (res, req) => {
 // Delete a Review
 router.delete('/:reviewId', requireAuth, async (req, res) => {
     const findReview = await Review.findOne({ where: { id: req.params.reviewId } })
+    // Error if review doesn't exist
     if (!findReview) {
         const e = new Error("Couldn't find a Review with the specified id")
         const errorObj = {
@@ -114,6 +117,7 @@ router.delete('/:reviewId', requireAuth, async (req, res) => {
         }
         return res.json(errorObj)
     }
+    // If the review is the req.user's- delete
     if(findReview.userId === req.user.id) {
         await findReview.destroy();
         const successObj = {

@@ -281,7 +281,31 @@ router.post('/:spotId/bookings',
 requireAuth,
 validateBooking,
 async (req, res) => {
+    const spot = await Spot.findOne({ where: { id: req.params.spotId } } )
+    const { startDate, endDate } = req.body
+    // Error if spot doesn't exist
+    if (!spot) {
+        const e = new Error("Couldn't find a Spot with the specified id")
+        const errorObj = {
+            message: `Spot couldn't be found`,
+            statusCode: 404
+        }
+        return res.json(errorObj)
+    }
+    // Check booking dates
+    const one = await Booking.findAll({
+        where: {spotId: spot.id},
+        order: ['startDate', 'DESC']
+    })
+    // Error if booking already exists for a spot on the specified days
 
+    // If the user is not the spot owner, create booking in the database
+    if (spot.ownerId !== req.user.id) {
+        const newBooking = await Booking.create({
+            startDate, endDate, spotId: spot.id, userId: req.user.id
+        })
+        return res.json(newBooking)
+    }
 })
 
 // Edit a Spot
