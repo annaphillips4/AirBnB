@@ -28,6 +28,24 @@ module.exports = {
         review: 'It was fine ig',
         stars: 3,
       },
+      {
+        userId: 2,
+        spotId: 1,
+        review: `Terrific!`,
+        stars: 5,
+      },
+      {
+        userId: 3,
+        spotId: 2,
+        review: 'Okay!',
+        stars: 3,
+      },
+      {
+        userId: 3,
+        spotId: 3,
+        review: 'Stayed here',
+        stars: 2,
+      },
     ], {});
   },
 
@@ -35,7 +53,7 @@ module.exports = {
     options.tableName = 'Reviews';
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {
-      id: { [Op.in]: [1,2,3] }
+      id: { [Op.in]: [1,2,3,4,5,6] }
     }, {});
   }
 };

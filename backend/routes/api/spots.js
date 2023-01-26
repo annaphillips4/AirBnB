@@ -298,7 +298,7 @@ async (req, res) => {
         order: ['startDate', 'DESC']
     })
     // Error if booking already exists for a spot on the specified days
-
+    
     // If the user is not the spot owner, create booking in the database
     if (spot.ownerId !== req.user.id) {
         const newBooking = await Booking.create({
