@@ -12,11 +12,25 @@ const { handleValidationErrors } = require('../../utils/validation');
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req
     if (user) {
-      const bookings = await Booking.findAll({
+      const Bookings = await Booking.findAll({
+        attributes: {
+            include: ['createdAt', 'updatedAt']
+        },
+        include: [{
+            model: Spot,
+            attributes: {
+            //   include: [[sequelize.fn('COALESCE', sequelize.col('Images.url'), null), 'previewImage']],
+              exclude: ['description', 'createdAt', 'updatedAt']
+            },
+            include: {
+              model: Image,
+              attributes: [],
+              where: { preview: true }
+            }
+        }],
         where: { userId: user.id },
-        include: [{ model: Spot }]
       })
-      return res.json(bookings)
+      return res.json({Bookings})
     }
   })
 
@@ -34,9 +48,8 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
         return res.json(errorObj)
     }
     if (booking.userId === req.user.id) {
-        const { startDate, endDate } = req.body
-        booking.set({ startDate, endDate })
-        await booking.update()
+        const updates = req.body
+        await booking.update(updates)
         return res.json(booking)
     }
 })
@@ -53,16 +66,16 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
         }
         return res.json(errorObj)
     }
-    // Error if today is past booking's startDate
-    const today = new Date()
-    if (startDate >= today) {
-        const e = new Error("Bookings that have been started can't be deleted")
-        const errorObj = {
-            message: "Bookings that have been started can't be deleted",
-            statusCode: 403
-        }
-        return res.json(errorObj)
-    }
+    // // Error if today is past booking's startDate
+    // const today = new Date()
+    // if (startDate >= today) {
+    //     const e = new Error("Bookings that have been started can't be deleted")
+    //     const errorObj = {
+    //         message: "Bookings that have been started can't be deleted",
+    //         statusCode: 403
+    //     }
+    //     return res.json(errorObj)
+    // }
     // If the booking is the req.user's- delete
     if(booking.userId === req.user.id) {
         await booking.destroy();

@@ -32,6 +32,15 @@ router.get('/current', requireAuth, async (req, res) => {
           attributes: ['id', 'firstName', 'lastName']
         }, {
           model: Spot,
+          attributes: {
+            include: [[sequelize.fn('COALESCE', sequelize.col('Images.url'), null), 'previewImage']],
+            exclude: ['description', 'createdAt', 'updatedAt']
+          },
+          include: {
+            model: Image,
+            attributes: [],
+            where: { preview: true }
+          }
         }, {
           model: Image,
           attributes: ['id','url']
@@ -40,6 +49,7 @@ router.get('/current', requireAuth, async (req, res) => {
       return res.json({ Reviews })
     }
   })
+
 
 // Edit a Review
 router.put('/:reviewId', requireAuth, validateReview, async (req, res) => {
