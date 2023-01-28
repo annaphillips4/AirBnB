@@ -20,8 +20,6 @@ module.exports = {
         name: 'A Real Spot',
         description: 'This is a description for a spot that really does exist.',
         price: 50,
-        avgRating: 3.8,
-        previewImage: 1,
         ownerId: 1,
       },
       {
@@ -34,8 +32,6 @@ module.exports = {
         name: 'Stygimoloch',
         description: 'Lots of knobs and boney spikes on the roof. Vegetarians only.',
         price: 150,
-        avgRating: 4.9,
-        previewImage: 2,
         ownerId: 1,
       },
       {
@@ -48,8 +44,6 @@ module.exports = {
         name: 'Give It a Go',
         description: `I mean, I think you should stay here. Whadda ya got to lose, right?`,
         price: 20,
-        avgRating: 2.1,
-        previewImage: 3,
         ownerId: 2,
       },
     ])
@@ -58,12 +52,6 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
-    await queryInterface.bulkDelete(options, {
-      name: {[Op.in]: [
-        'A Real Spot',
-        'Stygimoloch',
-        'Give It a Go'
-      ]}
-    }, {});
+    await queryInterface.bulkDelete(options, null, {});
   }
 };

@@ -45,16 +45,6 @@ module.exports = {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      avgRating: {
-        type: Sequelize.DECIMAL
-      },
-      previewImage: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Images',
-          key: 'id'
-        }
-      },
       ownerId: {
         type: Sequelize.INTEGER,
         allowNull: false,

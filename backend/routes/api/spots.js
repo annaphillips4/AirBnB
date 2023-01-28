@@ -73,9 +73,49 @@ const validateBooking = [
 
 // Get all Spots
 router.get('/', async (req, res) => {
-    const Spots = await Spot.findAll()
+    const Spots = await Spot.findAll({
+        attributes: {
+            include: [
+                'createdAt',
+                'updatedAt',
+                [sequelize.fn("AVG", sequelize.col("Reviews.stars", {
+                    where: { spotId: Spot.id }
+                    })), "avgRating"],
+            ]
+        },
+        include: [{
+            model: Review,
+            attributes: []
+        }, {
+            model: Image,
+            attributes: ['url']
+        }]
+    })
     return res.json({Spots})
 })
+
+// Get all Spots owned by the Current User
+router.get('/current', requireAuth, async (req, res) => {
+    const { user } = req;
+    if (user) {
+      // const userId = user.id;
+      const spots = await Spot.findAll( {
+        attributes: {
+          include: ['createdAt', 'updatedAt',
+          [sequelize.fn("AVG", sequelize.col("Reviews.stars", {
+                      where: { spotId: req.params.spotId }
+                  })), "avgRating"],
+          ]
+        },
+        include: [{
+          model: Review,
+          attributes: [],
+        }],
+        where: { ownerId: req.user.id }
+      } )
+      res.json({ spots })
+    } else return res.json({ user: null })
+  })
 
 // Get details of a Spot from an id
 router.get('/:spotId', async (req, res) => {
@@ -153,27 +193,6 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
             where: { url: url}
         })
         return res.json(checkImage)
-    }
-})
-
-// Delete a Spot Image
-router.delete('/:spotId/images/:imageId', requireAuth, async (res, req) => {
-    const image = await Image.findByPk({ where: { id: req.params.imageId } })
-    if (!image || image.userId !== req.user.id) {
-        const e = new Error("Couldn't find a Spot Image with the specified id")
-        const errorObj = {
-            message: `Spot Image couldn't be found`,
-            statusCode: 404
-        }
-        return res.json(errorObj)
-    }
-    if (image.userId === req.user.id) {
-        await image.destroy();
-        const successObj = {
-            message: 'Successfully deleted',
-            statusCode: 200
-        }
-        return res.json(successObj)
     }
 })
 
@@ -281,10 +300,13 @@ router.post('/:spotId/bookings',
 requireAuth,
 validateBooking,
 async (req, res) => {
+    console.log('router hit')
     const spot = await Spot.findOne({ where: { id: req.params.spotId } } )
+    console.log(`got spot ${spot}`)
     const { startDate, endDate } = req.body
+    console.log(`got req.body ${startDate} and ${endDate}`)
     // Error if spot doesn't exist
-    if (!spot) {
+    if (!spot || spot.ownerId === req.user.id) {
         const e = new Error("Couldn't find a Spot with the specified id")
         const errorObj = {
             message: `Spot couldn't be found`,
@@ -292,18 +314,14 @@ async (req, res) => {
         }
         return res.json(errorObj)
     }
-    // Check booking dates
-    const one = await Booking.findAll({
-        where: {spotId: spot.id},
-        order: ['startDate', 'DESC']
-    })
-    // Error if booking already exists for a spot on the specified days
-    
+    console.log(`passed error "!spot || spot.ownerId === req.user.id"`)
     // If the user is not the spot owner, create booking in the database
     if (spot.ownerId !== req.user.id) {
+        console.log(`entered "spot.ownerId !== req.user.id"`)
         const newBooking = await Booking.create({
             startDate, endDate, spotId: spot.id, userId: req.user.id
         })
+        console.log(newBooking)
         return res.json(newBooking)
     }
 })
@@ -314,7 +332,7 @@ requireAuth,
 validateSpot,
 async (req, res) => {
     const spot = await Spot.findByPk(req.params.spotId)
-    if (!spot || spot.ownerId !== req.user.id) {
+    if (!spot) {
         const e = new Error("Couldn't find a Spot with the specified id")
         const errorObj = {
             message: `Spot couldn't be found`,
@@ -326,14 +344,7 @@ async (req, res) => {
     if (spot.ownerId === req.user.id) {
         spot.set({ address, city, state, country, lat, lng, name, description, price })
         await spot.update()
-        const updatedSpot = await Spot.findOne({
-            attributes: {
-                include: ['createdAt', 'updatedAt'],
-                exclude: ['avgRating', 'previewImage']
-            },
-            where: { id: spot.id }
-        })
-        return res.json(updatedSpot)
+        return res.json(spot)
     }
 
 })

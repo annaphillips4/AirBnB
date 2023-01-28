@@ -21,37 +21,29 @@ const validateReview = [
     handleValidationErrors
 ]
 
+// Get all Reviews of the Current User
+router.get('/current', requireAuth, async (req, res) => {
+    const { user } = req;
+    if (user) {
+      const Reviews = await Review.findAll( {
+        attributes: [ 'id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'],
+        include: [{
+          model: User,
+          attributes: ['id', 'firstName', 'lastName']
+        }, {
+          model: Spot,
+        }, {
+          model: Image,
+          attributes: ['id','url']
+        }],
+        where: { userId: req.user.id } } )
+      return res.json({ Reviews })
+    }
+  })
+
 // Edit a Review
 router.put('/:reviewId', requireAuth, validateReview, async (req, res) => {
-    const findReview = await Review.findOne({ where: { id: req.params.reviewId } })
-    if (!findReview || findReview.userId !== req.user.id) {
-        const e = new Error("Couldn't find a Review with the specified id")
-        const errorObj = {
-            message: `Review couldn't be found`,
-            statusCode: 404
-        }
-        return res.json(errorObj)
-    }
-    if(findReview.userId === req.user.id) {
-        const { review, stars } = req.body
-        findReview.set({ review, stars })
-        await findReview.update()
-        return res.json(findReview)
-    }
-})
-
-// Add an Image to a Review based on the Review's id
-router.post('/:reviewId/images', requireAuth, async (req, res) => {
-    const findReview = await Review.findOne({
-        attributes: {
-            include: [
-                [sequelize.fn("COUNT", sequelize.col("Images.id", {
-                    where: { reviewId: req.params.reviewId }
-                })), "numImages"]
-            ]
-        },
-        where: { id: req.params.reviewId }
-    })
+    const findReview = await Review.findByPk(req.params.reviewId)
     if (!findReview) {
         const e = new Error("Couldn't find a Review with the specified id")
         const errorObj = {
@@ -60,15 +52,43 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
         }
         return res.json(errorObj)
     }
-    const maxImages = 10
-    if (findReview.numImages >= maxImages) {
-        const e = new Error("Cannot add any more images because there is a maximum of 10 images per resource")
+    const { review, stars } = req.body
+    if(findReview.userId === req.user.id) {
+        findReview.set({ review, stars })
+        await findReview.update()
+        return res.json(findReview)
+    }
+})
+
+// Add an Image to a Review based on the Review's id
+router.post('/:reviewId/images', requireAuth, async (req, res) => {
+    const findReview = await Review.findByPk(req.params.reviewId//, {
+    //     attributes: {
+    //         include: [
+    //             [sequelize.fn("COUNT", sequelize.col("Images.id", {
+    //                 where: { reviewId: req.params.reviewId }
+    //             })), "numImages"]
+    //         ]
+    //     }
+    // }
+    )
+    if (!findReview) {
+        const e = new Error("Couldn't find a Review with the specified id")
         const errorObj = {
-            message: `Maximum number of images for this resource was reached`,
-            statusCode: 403
+            message: `Review couldn't be found`,
+            statusCode: 404
         }
         return res.json(errorObj)
     }
+    // const maxImages = 10
+    // if (findReview.numImages >= maxImages) {
+    //     const e = new Error("Cannot add any more images because there is a maximum of 10 images per resource")
+    //     const errorObj = {
+    //         message: `Maximum number of images for this resource was reached`,
+    //         statusCode: 403
+    //     }
+    //     return res.json(errorObj)
+    // }
     if(findReview.userId === req.user.id) {
         const { url } = req.body
         const newImage = await Image.create({
@@ -82,32 +102,9 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
     }
 })
 
-// Delete a Review Image
-router.delete('/:reviewId/images/:imageId', requireAuth, async (res, req) => {
-    const image = await Image.findByPk({ where: { id: req.params.imageId } })
-    // Error if image doesn't exist
-    if (!image || image.userId !== req.user.id) {
-        const e = new Error("Couldn't find a Reveiw Image with the specified id")
-        const errorObj = {
-            message: `Review Image couldn't be found`,
-            statusCode: 404
-        }
-        return res.json(errorObj)
-    }
-    // If the image is the req.user's- delete
-    if (image.userId === req.user.id) {
-        await image.destroy();
-        const successObj = {
-            message: 'Successfully deleted',
-            statusCode: 200
-        }
-        return res.json(successObj)
-    }
-})
-
 // Delete a Review
 router.delete('/:reviewId', requireAuth, async (req, res) => {
-    const findReview = await Review.findOne({ where: { id: req.params.reviewId } })
+    const findReview = await Review.findByPk(req.params.reviewId)
     // Error if review doesn't exist
     if (!findReview) {
         const e = new Error("Couldn't find a Review with the specified id")

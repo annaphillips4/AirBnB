@@ -8,9 +8,22 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
+// Get all of the Current User's Bookings
+router.get('/current', requireAuth, async (req, res) => {
+    const { user } = req
+    if (user) {
+      const bookings = await Booking.findAll({
+        where: { userId: user.id },
+        include: [{ model: Spot }]
+      })
+      return res.json(bookings)
+    }
+  })
+
 // Edit a Booking
 router.put('/:bookingId', requireAuth, async (req, res) => {
     const booking = await Booking.findOne({ where: { id: req.params.bookingId } })
+
     // Error if booking doesn't exist
     if (!booking || booking.userId !== req.user.id) {
         const e = new Error("Couldn't find a Booking with the specified id")
@@ -28,6 +41,7 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
     }
 })
 
+// Delete a booking
 router.delete('/:bookingId', requireAuth, async (req, res) => {
     const booking = await Booking.findOne({ where: { id: req.params.bookingId } })
     // Error if booking doesn't exist
