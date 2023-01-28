@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      county: {
+      country: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -38,30 +38,31 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.BLOB,
+        type: Sequelize.STRING,
         allowNull: false,
       },
       price: {
         type: Sequelize.DECIMAL,
         allowNull: false,
       },
-      avgRating: {
-        type: Sequelize.DECIMAL
-      },
-      previewImage: {
-        type: Sequelize.INTEGER
-      },
       ownerId: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id'
+        },
+        onDelete: 'cascade'
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     });
   },

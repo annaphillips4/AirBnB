@@ -1,7 +1,7 @@
 const express = require('express');
 
-const { setTokenCookie, restoreUser } = require('../../utils/auth');
-const { User } = require('../../db/models');
+const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
+const { User, Spot, Review, Image, Booking, sequelize } = require('../../db/models');
 
 const router = express.Router();
 
@@ -18,8 +18,6 @@ const validateLogin = [
     .withMessage('Please provide a password.'),
   handleValidationErrors
 ];
-
-
 
 // Log in
 router.post(

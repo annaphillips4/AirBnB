@@ -10,14 +10,26 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Review.hasMany(models.Image, {
+        foreignKey: 'reviewId',
+        onDelete: 'CASCADE',
+        hooks: true,
+      }),
+      Review.belongsTo(models.Spot, { foreignKey: 'spotId'} ),
+      Review.belongsTo(models.User, { foreignKey: 'userId'} )
     }
   }
   Review.init({
-    userId: DataTypes.INTEGER,
-    spotId: DataTypes.INTEGER,
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    spotId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     review: {
-      type: DataTypes.BLOB,
+      type: DataTypes.STRING,
       validate: {
         len: [0, 500]
       }
@@ -33,6 +45,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Review',
+    defaultScope: {
+      attributes: {
+        exclude: ["createdAt", "updatedAt"]
+      }
+    },
   });
   return Review;
 };
