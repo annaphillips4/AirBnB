@@ -104,16 +104,17 @@ const validateSearchParams = [
 
 // Get all Spots
 router.get('/', validateSearchParams, async (req, res) => {
-    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+    let { page = 0, size = 20, minLat = -180, maxLat = 180, minLng = -180, maxLng = 180, minPrice = 0, maxPrice = 99999 } = req.query
     const Spots = await Spot.findAll({
         attributes: {
             include: [[sequelize.fn('COALESCE', sequelize.fn('AVG',
-             sequelize.col('Reviews.stars')), null), 'avgRating'],
+             sequelize.col('Reviews.stars')), 0), 'avgRating'],
             [sequelize.fn('COALESCE', sequelize.col('Images.url'), null), 'previewImage']]
         },
         include: [{
             model: Review,
             attributes: [],
+            required: false
         },
         {
             model: Image,
@@ -121,13 +122,14 @@ router.get('/', validateSearchParams, async (req, res) => {
             where: { preview: true }
         }],
         group: ['Spot.id', 'Images.url'],
-        // limit: size,
-        // offset: (page - 1) * size,
-        // where: {
-        //     lat: { [Op.between]: [minLat, maxLat] },
-        //     lng: { [Op.between]: [minLng, maxLng] },
-        //     price: { [Op.between]: [minPrice, maxPrice] },
-        // }
+        limit: size,
+        offset: (page - 1) * size,
+        subQuery: false,
+        where: {
+            lat: { [Op.between]: [minLat, maxLat] },
+            lng: { [Op.between]: [minLng, maxLng] },
+            price: { [Op.between]: [minPrice, maxPrice] },
+        }
     })
     return res.json({Spots})
 })
