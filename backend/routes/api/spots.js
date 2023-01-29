@@ -182,7 +182,7 @@ router.get('/:spotId', async (req, res) => {
                 as: 'Owner',
                 attributes: ['id', 'firstName', 'lastName'],
             }],
-        group: ['Spot.id', 'Images.url', 'Images.id']
+        group: ['Spot.id', 'Images.url', 'Images.id', 'Owner.id']
     })
     // Error is spot doesn't exist
     if (!spot) {
