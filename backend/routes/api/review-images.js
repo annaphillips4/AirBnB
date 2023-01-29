@@ -9,7 +9,7 @@ const router = express.Router();
 router.delete('/:imageId', requireAuth, async (req, res) => {
     const image = await Image.findByPk(req.params.imageId)
     // Error if image doesn't exist
-    if (!image || image.userId !== req.user.id) {
+    if (!image) {
         const e = new Error("Couldn't find a Reveiw Image with the specified id")
         const errorObj = {
             message: `Review Image couldn't be found`,

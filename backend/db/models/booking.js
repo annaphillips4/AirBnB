@@ -32,6 +32,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Booking',
+    defaultScope: {
+      
+    }
   });
   return Booking;
 };

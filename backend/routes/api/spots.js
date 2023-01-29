@@ -369,7 +369,6 @@ async (req, res) => {
         new Error("Couldn't find a Spot with the specified id")
         errorObj.errors.push("Start date conflicts with an existing booking")
         flag = true
-        console.log("start date err")
     }
     if (checkEndDate[0]) {
         new Error("Couldn't find a Spot with the specified id")
@@ -379,7 +378,7 @@ async (req, res) => {
     if (flag) {
         return res.json(errorObj)
     }
-    // Create spot after passing checks
+    // Create booking after passing checks
     if (spot.ownerId !== req.user.id) {
         const newBooking = await Booking.create({
             startDate, endDate, spotId: spot.id, userId: req.user.id
