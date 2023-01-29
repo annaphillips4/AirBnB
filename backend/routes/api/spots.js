@@ -104,7 +104,7 @@ const validateSearchParams = [
 
 // Get all Spots
 router.get('/', validateSearchParams, async (req, res) => {
-    let { page = 0, size = 20, minLat = -180, maxLat = 180, minLng = -180, maxLng = 180, minPrice = 0, maxPrice = 99999 } = req.query
+    let { page = 1, size = 20, minLat = -180, maxLat = 180, minLng = -180, maxLng = 180, minPrice = 0, maxPrice = 99999 } = req.query
     const Spots = await Spot.findAll({
         attributes: {
             include: [[sequelize.fn('COALESCE', sequelize.fn('AVG',
@@ -353,29 +353,33 @@ async (req, res) => {
     let { startDate, endDate } = req.body
     startDate = new Date (startDate)
     endDate = new Date (endDate)
-    const bookingsForSpot = await Booking.findAll({ where: { spotId: req.params.spotId }
+    let errorObj = {
+        message: `Sorry, this spot is already booked for the specified dates`,
+        statusCode: 403,
+        errors: []
+    }
+    const checkStartDate = await Booking.findAll({
+        where: { startDate: { [Op.between]: [startDate, endDate] } }
     })
-    bookingsForSpot.forEach( ele => {
-        if (startDate >= ele.startDate && startDate <= ele.endDate) {
-            const e = new Error("Couldn't find a Spot with the specified id")
-            const errorObj = {
-                message: `Sorry, this spot is already booked for the specified dates`,
-                statusCode: 403,
-                error: "Start date conflicts with an existing booking"
-            }
-            return res.json(errorObj)
-        }
-        if (endDate >= ele.startDate && endDate <= ele.endDate) {
-            const e = new Error("Couldn't find a Spot with the specified id")
-            const errorObj = {
-                message: `Sorry, this spot is already booked for the specified dates`,
-                statusCode: 403,
-                error: "End date conflicts with an existing booking"
-            }
-            return res.json(errorObj)
-        }
+    const checkEndDate = await Booking.findAll({
+        where: { endDate: { [Op.between]: [startDate, endDate] } }
     })
-    // If the user is not the spot owner, create booking in the database
+    let flag = false
+    if(checkStartDate[0]) {
+        new Error("Couldn't find a Spot with the specified id")
+        errorObj.errors.push("Start date conflicts with an existing booking")
+        flag = true
+        console.log("start date err")
+    }
+    if (checkEndDate[0]) {
+        new Error("Couldn't find a Spot with the specified id")
+        errorObj.errors.push("End date conflicts with an existing booking")
+        flag = true
+    }
+    if (flag) {
+        return res.json(errorObj)
+    }
+    // Create spot after passing checks
     if (spot.ownerId !== req.user.id) {
         const newBooking = await Booking.create({
             startDate, endDate, spotId: spot.id, userId: req.user.id
