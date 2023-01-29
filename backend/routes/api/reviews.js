@@ -102,7 +102,7 @@ router.post('/:reviewId/images', requireAuth, async (req, res) => {
     if(findReview.userId === req.user.id) {
         const { url } = req.body
         const newImage = await Image.create({
-            url, preview: false, reviewId: findReview.id, spotId: findReview.spotId
+            url, preview: false, reviewId: findReview.id, spotId: findReview.spotId, userId: req.user.id
         })
         const checkImage = await Image.findOne({
             attributes: ['id', 'url'],
