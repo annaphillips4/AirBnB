@@ -159,7 +159,7 @@ router.get('/current', requireAuth, async (req, res) => {
       res.json({ Spots })
     // return null is no user is logged in
     } else return res.json({ user: null })
-  })
+})
 
 // Get details of a Spot from an id
 router.get('/:spotId', async (req, res) => {
@@ -175,7 +175,7 @@ router.get('/:spotId', async (req, res) => {
         },
         {
             model: Image,
-            attributes: ['id', 'url', 'preview'],
+            attributes: [],
             where: { preview: true }
         }, {
                 model: User,
@@ -193,6 +193,13 @@ router.get('/:spotId', async (req, res) => {
         }
         return res.json(errorObj)
     }
+
+    // Add SpotImages to Spot
+    const images = await Image.findAll({
+        where: { spotId: req.params.spotId, reviewId: null },
+        attributes: ['id', 'url', 'preview']
+    })
+    spot.dataValues.SpotImages = images
 
     return res.json(spot)
 })
@@ -250,20 +257,28 @@ router.get('/:spotId/reviews', async (req, res) => {
         }
         return res.json(errorObj)
     }
-    const Reviews = await Review.findAll({
+    const ReviewsNoImages = await Review.findAll({
         attributes: ['id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt'],
         include: [{
             model:User,
             attributes: ['id', 'firstName', 'lastName']
-        }, {
-            model: Image,
-            // as: 'ReviewImages',
-            attributes: ['id', 'url']
         }],
         where: {
             spotId: req.params.spotId
         }
     })
+    // Get Images for reviews
+    let Reviews = []
+    for (let i = 0; i <= ReviewsNoImages.length; i++) {
+        let rev = ReviewsNoImages.pop();
+        const images = await Image.findAll({
+            where: { reviewId: rev.id},
+            attributes: ['id', 'url']
+        })
+        rev.dataValues.ReviewImages = images
+        Reviews.push(rev)
+    }
+
     return res.json({Reviews})
 })
 
@@ -351,8 +366,9 @@ async (req, res) => {
     }
     // Check if booking already exists
     let { startDate, endDate } = req.body
-    startDate = new Date (startDate)
-    endDate = new Date (endDate)
+    startDate = new Date(startDate)
+    endDate = new Date(endDate)
+    console.log(startDate, endDate)
     let errorObj = {
         message: `Sorry, this spot is already booked for the specified dates`,
         statusCode: 403,
@@ -365,13 +381,13 @@ async (req, res) => {
         where: { endDate: { [Op.between]: [startDate, endDate] } }
     })
     let flag = false
-    if(checkStartDate[0]) {
-        new Error("Couldn't find a Spot with the specified id")
+    if(checkEndDate[0]) {
+        new Error("Booking conflict")
         errorObj.errors.push("Start date conflicts with an existing booking")
         flag = true
     }
-    if (checkEndDate[0]) {
-        new Error("Couldn't find a Spot with the specified id")
+    if (checkStartDate[0]) {
+        new Error("Booking conflict")
         errorObj.errors.push("End date conflicts with an existing booking")
         flag = true
     }
@@ -380,6 +396,7 @@ async (req, res) => {
     }
     // Create booking after passing checks
     if (spot.ownerId !== req.user.id) {
+        console.log(startDate, endDate)
         const newBooking = await Booking.create({
             startDate, endDate, spotId: spot.id, userId: req.user.id
         })

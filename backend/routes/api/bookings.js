@@ -48,8 +48,11 @@ router.put('/:bookingId', requireAuth, async (req, res) => {
         return res.json(errorObj)
     }
     if (booking.userId === req.user.id) {
-        const updates = req.body
-        await booking.update(updates)
+        const { startDate, endDate } = req.body
+        await booking.update({
+            startDate: startDate,
+            endDate: endDate
+        })
         return res.json(booking)
     }
 })
