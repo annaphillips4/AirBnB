@@ -416,7 +416,6 @@ async (req, res) => {
 
     // Create booking after passing checks
     if (spot.ownerId !== req.user.id) {
-        console.log(startDate, endDate)
         const newBooking = await Booking.create({
             startDate, endDate, spotId: spot.id, userId: req.user.id
         })
