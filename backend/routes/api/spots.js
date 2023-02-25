@@ -355,6 +355,7 @@ requireAuth,
 validateBooking,
 async (req, res) => {
     const spot = await Spot.findOne({ where: { id: req.params.spotId } } )
+
     // Error if spot doesn't exist
     if (!spot || spot.ownerId === req.user.id) {
         const e = new Error("Couldn't find a Spot with the specified id")
@@ -364,29 +365,47 @@ async (req, res) => {
         }
         return res.json(errorObj)
     }
-    // Check if booking already exists
     let { startDate, endDate } = req.body
     startDate = new Date(startDate)
     endDate = new Date(endDate)
-    console.log(startDate, endDate)
-    let errorObj = {
-        message: `Sorry, this spot is already booked for the specified dates`,
-        statusCode: 403,
-        errors: []
+
+    // Error if endDate is before startDate
+    if (endDate <= startDate) {
+        let errorObj = {
+            message: `endDate cannot be on or before startDate`,
+            statusCode: 400,
+            errors: [
+                "endDate cannot be on or before startDate"
+            ]
+        }
+        return res.json(errorObj)
     }
+
+    // Error if booking already exists
     const checkStartDate = await Booking.findAll({
         where: { startDate: { [Op.between]: [startDate, endDate] } }
     })
     const checkEndDate = await Booking.findAll({
         where: { endDate: { [Op.between]: [startDate, endDate] } }
     })
+    const checkBoth = await Booking.findAll({
+        where: {
+            startDate: { [Op.lt]: startDate },
+            endDate: { [Op.gt]: endDate }
+        }
+    })
+    let errorObj = {
+        message: `Sorry, this spot is already booked for the specified dates`,
+        statusCode: 403,
+        errors: []
+    }
     let flag = false
-    if(checkEndDate[0]) {
+    if(checkEndDate[0] || checkBoth[0]) {
         new Error("Booking conflict")
         errorObj.errors.push("Start date conflicts with an existing booking")
         flag = true
     }
-    if (checkStartDate[0]) {
+    if (checkStartDate[0] || checkBoth[0]) {
         new Error("Booking conflict")
         errorObj.errors.push("End date conflicts with an existing booking")
         flag = true
@@ -394,6 +413,7 @@ async (req, res) => {
     if (flag) {
         return res.json(errorObj)
     }
+
     // Create booking after passing checks
     if (spot.ownerId !== req.user.id) {
         console.log(startDate, endDate)
