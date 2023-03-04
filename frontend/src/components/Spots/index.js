@@ -16,9 +16,9 @@ const SpotsIndex = () => {
             <ul>
                 {
                     Object.values(spots).map(spot => (
-                        <Link to={`/spots/${spot.id}`}>
+                        <Link to={`/spots/${spot.id}`} key={spot.id}>
                         <li key={spot.id}>
-                            {spot.name}
+                            {spot.name} Rating: {spot.avgRating}
                         </li>
                         </Link>
                     ))

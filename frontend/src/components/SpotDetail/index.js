@@ -17,7 +17,13 @@ const SpotDetail = () => {
     }, [dispatch])
 
     return (
-        <div>{spot?.id}</div>
+        <div>
+            <div>{spot?.id}:{spot?.name}
+            </div>
+            <div>
+
+            </div>
+        </div>
     )
 }
 
