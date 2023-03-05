@@ -11,41 +11,41 @@ const { handleValidationErrors } = require('../../utils/validation');
 
 const validateSpot = [
     check('address')
-      .exists({ checkFalsy: true })
-      .notEmpty()
+      .exists()
+    //   .notEmpty()
       .withMessage("Street address is required"),
     check('city')
-      .exists({ checkFalsy: true })
-      .notEmpty()
+      .exists()
+    //   .notEmpty()
       .withMessage("City is required"),
     check('state')
-      .exists({ checkFalsy: true })
-      .notEmpty()
+      .exists()
+    //   .notEmpty()
       .withMessage("State is required"),
     check('country')
-      .exists({ checkFalsy: true })
-      .notEmpty()
+      .exists()
+    //   .notEmpty()
       .withMessage("Country is required"),
     check('lat')
-      .exists({ checkFalsy: true })
-      .notEmpty()
+      .exists()
+    //   .notEmpty()
       .withMessage("Latitude is not valid"),
     check('lng')
-      .exists({ checkFalsy: true })
-      .notEmpty()
+      .exists()
+    //   .notEmpty()
       .withMessage("Longitude is not valid"),
     check('name')
-      .exists({ checkFalsy: true })
-      .notEmpty()
+      .exists()
+    //   .notEmpty()
       .isLength( { max: 50 } )
       .withMessage("Name must be less than 50 characters"),
     check('description')
-      .exists({ checkFalsy: true })
-      .notEmpty()
+      .exists()
+    //   .notEmpty()
       .withMessage("Description is required"),
     check('price')
-      .exists({ checkFalsy: true })
-      .notEmpty()
+      .exists()
+    //   .notEmpty()
       .withMessage("Price per day is required"),
     handleValidationErrors
 ];
@@ -119,15 +119,15 @@ router.get('/', validateSearchParams, async (req, res) => {
         {
             model: Image,
             attributes: [],
-            where: { preview: true }
+            // where: { preview: true }
         }],
         group: ['Spot.id', 'Images.url'],
         limit: size,
         offset: (page - 1) * size,
         subQuery: false,
         where: {
-            lat: { [Op.between]: [minLat, maxLat] },
-            lng: { [Op.between]: [minLng, maxLng] },
+            // lat: { [Op.between]: [minLat, maxLat] },
+            // lng: { [Op.between]: [minLng, maxLng] },
             price: { [Op.between]: [minPrice, maxPrice] },
         }
     })
@@ -151,7 +151,7 @@ router.get('/current', requireAuth, async (req, res) => {
         {
             model: Image,
             attributes: [],
-            where: { preview: true }
+            // where: { preview: true }
         }],
         group: ['Spot.id', 'Images.url'],
         where: { ownerId: req.user.id }
@@ -176,7 +176,7 @@ router.get('/:spotId', async (req, res) => {
         {
             model: Image,
             attributes: [],
-            where: { preview: true }
+            // where: { preview: true }
         }, {
                 model: User,
                 as: 'Owner',
@@ -214,7 +214,7 @@ router.post('/',
             address, city, state, country, lat, lng, name, description, price, ownerId: req.user.id
         })
         const checkInDB = await Spot.findOne({ where: { id: newSpot.id } })
-        return res.json(checkInDB)
+        return res.json(newSpot)
 })
 
 // Add an Image to a Spot based on the Spot's id

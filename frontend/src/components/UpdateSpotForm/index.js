@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom"
-import { postSpot } from "../../store/spots";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useParams } from "react-router-dom"
+import { fetchSpot, putSpot } from "../../store/spots";
 
-const SpotForm = () => {
+const UpdateSpotForm = () => {
+    const { spotId } = useParams()
+    const spot = useSelector(state => state.spots[spotId])
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -41,18 +43,41 @@ const SpotForm = () => {
 
     useEffect(() => {
         const errors = [];
-        if(!country.length) errors.push('Country is required')
-        if(!address.length) errors.push('Address is required')
-        if(!city.length) errors.push('City is required')
-        if(!state.length) errors.push('State is required')
+        if(!country?.length) errors.push('Country is required')
+        if(!address?.length) errors.push('Address is required')
+        if(!city?.length) errors.push('City is required')
+        if(!state?.length) errors.push('State is required')
         if(!Number(lat)) errors.push('Latitude is required')
         if(!Number(lng)) errors.push('Longitude is required')
-        if(!description.length) errors.push('Description is required')
-        if(!name.length) errors.push('Name is required')
+        if(!description?.length) errors.push('Description is required')
+        if(!name?.length) errors.push('Name is required')
         if(!Number(price)) errors.push('Price is required')
-        if(!prevImg.length) errors.push('Preview Image is required')
+        if(!prevImg?.length) errors.push('Preview Image is required')
         setValidationErrors(errors)
     }, [country, city, address, state, lat, lng, description, name, price, prevImg])
+
+    useEffect(() => {
+        if(!spot) {
+            dispatch(fetchSpot(spotId))
+        }
+    }, [dispatch])
+
+    useEffect(() => {
+        setCountry(spot?.country)
+        setAddress(spot?.address)
+        setCity(spot?.city)
+        setState(spot?.state)
+        setLat(spot?.lat)
+        setLng(spot?.lng)
+        setDescription(spot?.description)
+        setName(spot?.name)
+        setPrice(spot?.price)
+        setPrevImg(spot?.prevImg)
+        setImg1(spot?.img1)
+        setImg2(spot?.img3)
+        setImg3(spot?.img2)
+        setImg4(spot?.img4)
+    }, [spot])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -61,6 +86,7 @@ const SpotForm = () => {
         if(validationErrors.length) return alert('Cannot Submit');
 
         const payload = {
+            id: spotId,
             country,
             address,
             city,
@@ -77,7 +103,7 @@ const SpotForm = () => {
             // img4
         };
 
-        let createdSpot = await dispatch(postSpot(payload))
+        let updatedSpot = await dispatch(putSpot(payload))
         setAddress('');
         setCity('');
         setCountry('');
@@ -92,15 +118,15 @@ const SpotForm = () => {
         setPrevImg('');
         setPrice('');
         setHasSubmitted(false);
-        if (createdSpot) {
-            history.push(`/spots/${createdSpot.id}`)
+        if (updatedSpot) {
+            history.push(`/spots/${updatedSpot.id}`)
         }
     };
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
-            <h1>Create a New Spot</h1>
+            <h1>Update Your Spot</h1>
             <h2>Where's your place located?</h2>
             <p>Guests will only get your exact address once they booked a reservation.</p>
                 <label htmlFor='Country'>Country</label>
@@ -256,10 +282,10 @@ const SpotForm = () => {
                     value={img4}
                     onChange={updateImg4}
                 />
-                <button type="submit">Create Spot</button>
+                <button type="submit">Update Spot</button>
             </form>
         </div>
     )
 }
 
-export default SpotForm;
+export default UpdateSpotForm;
