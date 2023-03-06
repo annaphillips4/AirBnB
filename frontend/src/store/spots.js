@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const LOAD_SPOTS = 'spots/LOAD_SPOTS'
 const LOAD_SPOT = 'spots/LOAD_SPOT'
 const LOAD_USER_SPOTS = 'spots/LOAD_USER_SPOTS'
+const ADD_SPOT = 'spots/ADD_SPOT'
 const UPDATE_SPOT = 'spots/UPDATE_SPOT'
 const DELETE_SPOT = 'spots/DELETE_SPOT'
 
@@ -12,7 +13,6 @@ export const fetchSpots = () => async dispatch => {
 
     if (response.ok) {
         const payload = await response.json();
-        console.log(payload)
         dispatch(loadSpots(payload.Spots))
     }
 }
@@ -27,10 +27,10 @@ export const fetchSpot = (spotId) => async dispatch => {
 }
 export const fetchUserSpots = () => async dispatch => {
     const response = await csrfFetch('/api/spots/current')
-console.log(response)
+
     if(response.ok) {
         const payload = await response.json();
-        
+
         dispatch(loadUserSpots(payload.Spots))
     }
 }
@@ -44,7 +44,7 @@ export const postSpot = (payload) => async dispatch => {
 
     if (response.ok) {
         const spot = await response.json()
-        dispatch(loadSpot(spot))
+        dispatch(addSpot(spot))
         return spot
     }
 }
@@ -61,6 +61,17 @@ export const putSpot = (payload) => async dispatch => {
         return spot
     }
 }
+export const deleteSpot = (spotId) => async dispatch => {
+    const response = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'DELETE',
+    });
+
+    if (response.ok) {
+        const spot = await response.json();
+        dispatch(killSpot(spot))
+        return spot;
+    }
+}
 
 // actions
 export const loadSpots = spots => ({
@@ -75,8 +86,16 @@ export const loadUserSpots = spots => ({
     type: LOAD_USER_SPOTS,
     spots
 })
+export const addSpot = spot => ({
+    type: ADD_SPOT,
+    spot
+})
 export const updateSpot = spot => ({
     type: UPDATE_SPOT,
+    spot
+})
+export const killSpot = spot => ({
+    type: DELETE_SPOT,
     spot
 })
 
@@ -95,16 +114,19 @@ export const spotsReducer = (state = initialState, action) => {
                 ...state
             }}
         case UPDATE_SPOT:
+        case ADD_SPOT:
         case LOAD_SPOT:
             return {...state, [action.spot.id]: action.spot}
-        case LOAD_USER_SPOTS: {
+        case LOAD_USER_SPOTS:
             const allSpots = {};
             action.spots.forEach(spot => {
                 allSpots[spot.id] = spot;
             })
-            return {
-                ...allSpots
-            }}
+            return { ...allSpots }
+        case DELETE_SPOT:
+            const newState = {...state};
+            delete newState[action.spot.id]
+            return newState
 
         default:
             return state

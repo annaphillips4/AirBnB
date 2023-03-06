@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { fetchUserSpots } from '../../store/spots'
 import { Link, useHistory } from 'react-router-dom'
+import OpenModalButton from '../OpenModalButton'
+import ConfirmDeleteModal from '../ConfirmDeleteModal'
 
 const ManageSpotsIndex = () => {
     const spots = useSelector(state => state.spots)
@@ -16,8 +18,6 @@ const ManageSpotsIndex = () => {
         history.push(`/spots/${spotId}/edit`)
     }
 
-    const handleDelete = () => {}
-
     return (
         <div>
             <ul>
@@ -30,7 +30,10 @@ const ManageSpotsIndex = () => {
                             </li>
                             </Link>
                             <button onClick={()=>{handleUpdate(spot.id)}}>Update</button>
-                            <button onClick={handleDelete}>Delete</button>
+                            <OpenModalButton
+                                buttonText="Delete"
+                                modalComponent={<ConfirmDeleteModal spotId={spot.id} />}
+                            />
                         </div>
                     ))
                 }
