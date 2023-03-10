@@ -21,8 +21,8 @@ const SpotDetail = () => {
             <div>{spot?.id}:{spot?.name}
             </div>
             <div>
-                {spot.SpotImages && spot.SpotImages.map(img => {
-                    return <img src={img.url}/>
+                {spot?.SpotImages && spot?.SpotImages.map(img => {
+                    return <img key={img.id} src={img.url}/>
                 })}
             </div>
             <SpotReviews />
