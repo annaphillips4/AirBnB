@@ -60,6 +60,8 @@ const SpotForm = () => {
         setHasSubmitted(true);
         if(validationErrors.length) return alert('Cannot Submit');
 
+        const imagesArr = [prevImg, img1, img2, img3, img4]
+
         const payload = {
             country,
             address,
@@ -70,11 +72,7 @@ const SpotForm = () => {
             description,
             name,
             price,
-            // prevImg,
-            // img1,
-            // img2,
-            // img3,
-            // img4
+            imagesArr
         };
 
         let createdSpot = await dispatch(postSpot(payload))

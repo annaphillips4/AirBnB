@@ -267,6 +267,14 @@ router.get('/:spotId/reviews', async (req, res) => {
             spotId: req.params.spotId
         }
     })
+    if (!ReviewsNoImages.length) {
+        const e = new Error("Couldn't find a Review with the specified id")
+        const errorObj = {
+            message: `Reviews couldn't be found`,
+            statusCode: 404
+        }
+        return res.json(errorObj)
+    }
     // Get Images for reviews
     let Reviews = []
     for (let i = 0; i <= ReviewsNoImages.length; i++) {
@@ -462,7 +470,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
             message: 'Successfully deleted',
             statusCode: 200
         }
-        return res.json(successObj)
+        return res.json(spot)
     }
 })
 

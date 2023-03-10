@@ -2,13 +2,13 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { fetchSpot } from "../../store/spots"
+import SpotReviews from "../SpotReviews"
 
 
 const SpotDetail = () => {
     const { spotId } = useParams()
     const spot = useSelector(state => state.spots[spotId])
     const dispatch = useDispatch()
-    console.log(spot)
 
     useEffect(() => {
         if (!spot) {
@@ -21,8 +21,11 @@ const SpotDetail = () => {
             <div>{spot?.id}:{spot?.name}
             </div>
             <div>
-
+                {spot.SpotImages && spot.SpotImages.map(img => {
+                    return <img src={img.url}/>
+                })}
             </div>
+            <SpotReviews />
         </div>
     )
 }

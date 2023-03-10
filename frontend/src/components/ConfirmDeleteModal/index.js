@@ -8,10 +8,11 @@ function ConfirmDeleteModal({ spotId }) {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const handleDelete = (e) => {
+    const handleDelete = async (e) => {
         e.preventDefault();
-        dispatch(deleteSpot(spotId))
-        history.go(0)
+        await dispatch(deleteSpot(spotId))
+        .then(closeModal())
+        // history.go(0)
 
     }
     return (
