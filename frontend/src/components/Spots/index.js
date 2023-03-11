@@ -19,6 +19,7 @@ const SpotsIndex = () => {
                         <Link to={`/spots/${spot.id}`} key={spot.id}>
                         <li key={spot.id}>
                             {spot.name} Rating: {spot.avgRating}
+                            <img src={spot.previewImage} />
                         </li>
                         </Link>
                     ))
