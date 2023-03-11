@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { fetchSpots } from '../../store/spots'
 import { Link } from 'react-router-dom'
+import SpotTile from '../SpotTile'
 
 const SpotsIndex = () => {
     const spots = useSelector(state => state.spots)
@@ -17,10 +18,7 @@ const SpotsIndex = () => {
                 {
                     Object.values(spots).map(spot => (
                         <Link to={`/spots/${spot.id}`} key={spot.id}>
-                        <li key={spot.id}>
-                            {spot.name} Rating: {spot.avgRating}
-                            <img src={spot.previewImage} />
-                        </li>
+                        <SpotTile spot={spot} />
                         </Link>
                     ))
                 }

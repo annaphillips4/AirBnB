@@ -1,0 +1,28 @@
+.tile {
+    height: 460px;
+    width: 380px;
+    margin: 10px;
+    display: inline-block;
+    background-color: white;
+    border-radius: 10px;
+    filter: drop-shadow(5px 5px 4px #A9A9A9);
+
+}
+
+.tile-image {
+    width: 380px;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.spot-info {
+    position: absolute;
+    margin-left: 20px;
+}
+
+.tile-rating {
+    float: right;
+    margin-top: 25px;
+    margin-right: 20px;
+}
