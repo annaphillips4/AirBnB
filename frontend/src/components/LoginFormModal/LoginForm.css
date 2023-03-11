@@ -1,0 +1,28 @@
+.modal {
+    width: 200px;
+    padding: 50px;
+    border-radius: 25px;
+}
+
+.form-header {
+    font-style: italic;
+    margin: auto;
+}
+
+.form-label {
+    display: block;
+    margin: auto;
+}
+
+.form-input {
+    display: block;
+    width: 100%
+}
+
+.modal-button {
+    width: 100%
+}
+
+.errors {
+    color: red
+}

@@ -1,3 +1,19 @@
 .hidden {
     display: none
 }
+
+.navBar {
+    width: 100%;
+    height: 50px;
+    padding: 10px
+}
+
+.home {
+    position: fixed;
+}
+
+.nav {
+    position: fixed;
+    right: 10px;
+    top: 0;
+}

@@ -19,26 +19,29 @@ function Navigation({ isLoaded }){
     );
   } else {
     sessionLinks = (
+      <>
       <li>
         <OpenModalButton
           buttonText="Log In"
           modalComponent={<LoginFormModal />}
-        />
+        /></li>
+        <li>
         <OpenModalButton
           buttonText="Sign Up"
           modalComponent={<SignupFormModal />}
         />
       </li>
+      </>
     );
   }
 
   return (
-    <ul>
-      <li>
-        <NavLink exact to="/">Home</NavLink>
-      </li>
-      {isLoaded && sessionLinks}
-    </ul>
+    <div className='navBar'>
+      <NavLink exact to="/" className='home'><img src='https://res.cloudinary.com/duakjbyfi/image/upload/v1678545268/AirBnB%20Clone/logo_browser.psd_vhyhya.png' /></NavLink>
+      <ul className='nav'>
+        {isLoaded && sessionLinks}
+      </ul>
+    </div>
   );
 }
 
