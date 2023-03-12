@@ -33,14 +33,14 @@ const SpotDetail = () => {
                 {
                     reviewCount === 0 ?
                     <p><i className="fa-solid fa-star"></i> New</p> :
-                    <p><i className="fa-solid fa-star"></i> {spot?.avgRating?.toFixed(2)} · {reviewCount} {reviewCount > 1 ? 'Reviews' : 'Review'}</p>
+                    <p><i className="fa-solid fa-star"></i> {parseFloat(spot?.avgRating).toFixed(2)} · {reviewCount} {reviewCount > 1 ? 'Reviews' : 'Review'}</p>
                 }
             </div>
             <div className="review-container">
                 {
                     reviewCount === 0 ?
                     <p><i className="fa-solid fa-star"></i> New</p> :
-                    <p><i className="fa-solid fa-star"></i> {spot?.avgRating?.toFixed(2)} · {reviewCount} {reviewCount > 1 ? 'Reviews' : 'Review'}</p>
+                    <p><i className="fa-solid fa-star"></i> {parseFloat(spot?.avgRating).toFixed(2)} · {reviewCount} {reviewCount > 1 ? 'Reviews' : 'Review'}</p>
                 }
                 <SpotReviews />
             </div>

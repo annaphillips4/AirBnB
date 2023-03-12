@@ -11,7 +11,7 @@ const SpotTile = ({ spot }) => {
             </div>
             <div className='tile-rating'>
                 {
-                    spot.avgRating === 0 ?
+                    parseFloat(spot.avgRating) === 0 ?
                     <p><i className="fa-solid fa-star"></i> New</p> :
                     <p><i className="fa-solid fa-star"></i> {rating}</p>
                 }
