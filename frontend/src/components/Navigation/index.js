@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import OpenModalButton from '../OpenModalButton';
@@ -13,9 +13,14 @@ function Navigation({ isLoaded }){
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <li>
-        <ProfileButton user={sessionUser} />
-      </li>
+      <div>
+        <li>
+          <Link to='/spots/new'>Create a New Spot</Link>
+        </li>
+        <li>
+          <ProfileButton user={sessionUser} />
+        </li>
+      </div>
     );
   } else {
     sessionLinks = (

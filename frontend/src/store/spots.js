@@ -59,7 +59,6 @@ export const postSpot = (payload) => async dispatch => {
     if (response.ok) {
         const spot = await response.json()
         for await (let image of imagesArr) {
-            console.log(image)
             let imageRes = await csrfFetch(`/api/spots/${spot.id}/images`, {
                 method: 'POST',
                 body: JSON.stringify(image)

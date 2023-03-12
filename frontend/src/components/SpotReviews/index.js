@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom"
 import { deleteReview, fetchSpotReviews } from "../../store/reviews"
 import OpenModalButton from "../OpenModalButton"
 import PostReviewModal from "../PostReviewModal"
+import ReviewTile from "../ReviewTile"
 
 const SpotReviews = () => {
     const { spotId } = useParams()
@@ -33,9 +34,9 @@ const SpotReviews = () => {
                 ? revArr.map(rev => {
                     const usersReview = rev.userId === user?.id
                     return (
-                        <p key={rev.id}>{rev.review}
+                        <div key={rev.id}><ReviewTile rev={rev} />
                         {usersReview && <button onClick={() => {handleDelete(rev.id)}}>Delete</button>}
-                        </p>
+                        </div>
                     )
             })
                 : <p>Be the first to leave a review!</p>}

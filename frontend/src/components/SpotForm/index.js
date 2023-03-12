@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom"
 import { postSpot } from "../../store/spots";
+import './SpotForm.css'
 
 const SpotForm = () => {
     const dispatch = useDispatch();
@@ -20,8 +21,8 @@ const SpotForm = () => {
     const [price, setPrice] = useState('');
     const [prevImg, setPrevImg] = useState('');
     const [img1, setImg1] = useState('');
-    const [img3, setImg2] = useState('');
-    const [img2, setImg3] = useState('');
+    const [img2, setImg2] = useState('');
+    const [img3, setImg3] = useState('');
     const [img4, setImg4] = useState('');
 
     const updateCountry = (e) => setCountry(e.target.value);
@@ -96,16 +97,17 @@ const SpotForm = () => {
     };
 
     return (
-        <div>
+        <div className="form">
             <form onSubmit={handleSubmit}>
-            <h1>Create a New Spot</h1>
-            <h2>Where's your place located?</h2>
+            <h1 className="form">Create a New Spot</h1>
+            <h2 className="form">Where's your place located?</h2>
             <p>Guests will only get your exact address once they booked a reservation.</p>
                 <label htmlFor='Country'>Country</label>
                 {hasSubmitted && !country && (
                     <label htmlFor='Country' className='field-error'>Country is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='Country'
                     placeholder="Country"
@@ -118,6 +120,7 @@ const SpotForm = () => {
                     <label htmlFor='Address' className='field-error'>Address is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='Address'
                     placeholder="Address"
@@ -130,6 +133,7 @@ const SpotForm = () => {
                     <label htmlFor='City' className='field-error'>City is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='City'
                     placeholder="City"
@@ -142,6 +146,7 @@ const SpotForm = () => {
                     <label htmlFor='State' className='field-error'>State is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='State'
                     placeholder="STATE"
@@ -154,6 +159,7 @@ const SpotForm = () => {
                     <label htmlFor='Latitude' className='field-error'>Latitude is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='Latitude'
                     placeholder="Latitude"
@@ -168,6 +174,7 @@ const SpotForm = () => {
                     <label htmlFor='Longitude' className='field-error'>Longitude is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='Longitude'
                     placeholder="Longitude"
@@ -179,7 +186,8 @@ const SpotForm = () => {
                 />
                 <h2>Describe your place to guests</h2>
                 <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
-                <input
+                <textarea
+                    className="desc"
                     type='text'
                     name='Description'
                     placeholder="Please write at least 30 characters"
@@ -194,6 +202,7 @@ const SpotForm = () => {
                 <h2>Create a title for your spot</h2>
                 <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
                 <input
+                    className="full"
                     type='text'
                     name='Name'
                     placeholder="Name of your spot"
@@ -206,7 +215,8 @@ const SpotForm = () => {
                 )}
                 <h2>Set a base price for your spot</h2>
                 <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
-                <input
+                $ <input
+                    className="price"
                     type='text'
                     name='Price'
                     placeholder="Price per night (USD)"
@@ -220,6 +230,7 @@ const SpotForm = () => {
                 <h2>Liven up your spot with photos</h2>
                 <p>Submit a link to at least one photo to publish your spot.</p>
                 <input
+                    className="full"
                     type='url'
                     name='Preview Img'
                     placeholder="Preview Image URL"
@@ -231,24 +242,28 @@ const SpotForm = () => {
                     <label htmlFor='Preview Img' className='field-error'>Preview image is required</label>
                 )}
                 <input
+                    className="full"
                     type='url'
                     placeholder="Image URL"
                     value={img1}
                     onChange={updateImg1}
                 />
                 <input
+                    className="full"
                     type='url'
                     placeholder="Image URL"
                     value={img2}
                     onChange={updateImg2}
                 />
                 <input
+                    className="full"
                     type='url'
                     placeholder="Image URL"
                     value={img3}
                     onChange={updateImg3}
                 />
                 <input
+                    className="full"
                     type='url'
                     placeholder="Image URL"
                     value={img4}
