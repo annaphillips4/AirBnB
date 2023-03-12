@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     review: {
-      type: DataTypes.STRING,
+      type: DataTypes.BLOB,
       validate: {
         len: [0, 500]
       }
