@@ -11,7 +11,7 @@ const SpotTile = ({ spot }) => {
                 {
                     spot.avgRating === 0 ?
                     <p><i className="fa-solid fa-star"></i> New</p> :
-                    <p><i className="fa-solid fa-star"></i> {spot?.avgRating.toFixed(2)}</p>
+                    <p><i className="fa-solid fa-star"></i> {spot.avgRating.toFixed(2)}</p>
                 }
             </div>
         </div>
