@@ -11,18 +11,6 @@ module.exports = {
     options.tableName = 'Spots';
     await queryInterface.bulkInsert(options, [
       {
-        address: '31 Brookfield Road',
-        city: 'Austin',
-        state: 'Texas',
-        country: 'USA',
-        lat: 64.2008,
-        lng: 149.4937,
-        name: 'The Beehive',
-        description: "Clean, Zen modern backyard cottage, easy access to SXSW, convention center, great dining, and public transportation. Gorgeous, peaceful space, close to the action but perfect for rest and recharging. Easy access to SXSW, ACL, F1 and all festivals. Enjoy this clean, modern cottage nestled in a cozy but convenient Central East Austin neighborhood. Inspired by Japanese teahouses, this backyard cottage provides easy access to SXSW venues, ACL Fest, downtown, great restaurants, and public transportation while offering a peaceful retreat for resting and recharging. Gorgeous light, vaulted ceilings, and an open floor plan make this unique 1 BR/1BA feel spacious, calm, and inviting. The Beehive features a full kitchen, roomy indoor and outdoor showers, a lovely work space, all-new furnishings and fixtures and a queen bed as well as a double foldout couch. (Please note: there is no tv or cable - the better to recharge. Since I work in tv, I find it encourages me to play records on the record player instead. There are plenty of books as well!) The Beehive is an easy bike, scooter or Lyft ride to downtown and UT. And there are great tacos, sandwiches, BBQ and coffee within walking distance. The train and bus lines are all handy. Blow dryer, iron and ironing board, washer and dryer are all included as well. If you want to see a great photo spread on the Beehive, do a search for the magazine Tribeza and 'downsizing'. They did a nice article on the place and you can see more pics. Access to the Beehive is a short walk down the driveway to the back of the main house. You will have total privacy in back with no shared common areas.",
-        price: 284,
-        ownerId: 1,
-      },
-      {
         address: '4159 East Street',
         city: 'Lumberton',
         state: 'Texas',
@@ -32,6 +20,18 @@ module.exports = {
         name: 'Naturalist Boudoir',
         description: "Nestled in the heart of the Big Thicket, our Naturalist Boudoir B&B has everything you need to revitalize your senses. Extremely private area for the naturalist with outdoor hot tub and shower. We welcome all guests to experience our lovely Naturalist Boudoir & reconnect with your special someone. Should your dates not be available for this cabin, please check out our additional cabins...Naturalist Boudoir TOO, Naturalist Boudoir on Point & Naturalist Boudoir RITZ. Check my profile for all. Ready to unplug and get back to nature, come check out Naturalist Boudoir. Naturalist Boudoir is an unusual space where one can get back to nature in a peaceful, private setting. As you are actually in nature, you may encounter God's creatures of the woods.",
         price: 359,
+        ownerId: 1,
+      },
+      {
+        address: '31 Brookfield Road',
+        city: 'Austin',
+        state: 'Texas',
+        country: 'USA',
+        lat: 64.2008,
+        lng: 149.4937,
+        name: 'The Beehive',
+        description: "Clean, Zen modern backyard cottage, easy access to SXSW, convention center, great dining, and public transportation. Gorgeous, peaceful space, close to the action but perfect for rest and recharging. Easy access to SXSW, ACL, F1 and all festivals. Enjoy this clean, modern cottage nestled in a cozy but convenient Central East Austin neighborhood. Inspired by Japanese teahouses, this backyard cottage provides easy access to SXSW venues, ACL Fest, downtown, great restaurants, and public transportation while offering a peaceful retreat for resting and recharging. Gorgeous light, vaulted ceilings, and an open floor plan make this unique 1 BR/1BA feel spacious, calm, and inviting. The Beehive features a full kitchen, roomy indoor and outdoor showers, a lovely work space, all-new furnishings and fixtures and a queen bed as well as a double foldout couch. (Please note: there is no tv or cable - the better to recharge. Since I work in tv, I find it encourages me to play records on the record player instead. There are plenty of books as well!) The Beehive is an easy bike, scooter or Lyft ride to downtown and UT. And there are great tacos, sandwiches, BBQ and coffee within walking distance. The train and bus lines are all handy. Blow dryer, iron and ironing board, washer and dryer are all included as well. If you want to see a great photo spread on the Beehive, do a search for the magazine Tribeza and 'downsizing'. They did a nice article on the place and you can see more pics. Access to the Beehive is a short walk down the driveway to the back of the main house. You will have total privacy in back with no shared common areas.",
+        price: 284,
         ownerId: 1,
       },
       {
