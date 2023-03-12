@@ -66,7 +66,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
     description: {
-      type: DataTypes.BLOB,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     price: {
