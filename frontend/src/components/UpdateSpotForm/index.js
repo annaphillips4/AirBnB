@@ -58,9 +58,9 @@ const UpdateSpotForm = () => {
     }, [country, city, address, state, lat, lng, description, name, price, prevImg])
 
     useEffect(() => {
-        if(!spot) {
+        // if(!spot) {
             dispatch(fetchSpot(spotId))
-        }
+        // }
     }, [dispatch])
 
     useEffect(() => {
@@ -73,11 +73,11 @@ const UpdateSpotForm = () => {
         setDescription(spot?.description)
         setName(spot?.name)
         setPrice(spot?.price)
-        setPrevImg(spot?.SpotImages[0]?.url)
-        setImg1(spot?.SpotImages[1]?.url)
-        setImg2(spot?.SpotImages[2]?.url)
-        setImg3(spot?.SpotImages[3]?.url)
-        setImg4(spot?.SpotImages[4]?.url)
+        setPrevImg(spot?.SpotImages[0].url)
+        setImg1(spot?.SpotImages[1].url)
+        setImg2(spot?.SpotImages[2].url)
+        setImg3(spot?.SpotImages[3].url)
+        setImg4(spot?.SpotImages[4].url)
     }, [spot])
 
     const handleSubmit = async (e) => {
