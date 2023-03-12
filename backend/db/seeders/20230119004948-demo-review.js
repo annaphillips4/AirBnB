@@ -160,12 +160,6 @@ module.exports = {
         review: `Sample review text.`,
         stars: 2,
       },
-      {
-        userId: 1,
-        spotId: 9,
-        review: `Sample review text.`,
-        stars: 5,
-      },
     ], {});
   },
 

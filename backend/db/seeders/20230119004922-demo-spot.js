@@ -111,18 +111,6 @@ module.exports = {
         price: 350,
         ownerId: 6,
       },
-      {
-        address: '38 Preston Acre',
-        city: 'Key West',
-        state: 'Florida',
-        country: 'USA',
-        lat: 35.5403,
-        lng: 79.7480,
-        name: 'The Grand Tiki',
-        description: `Come relax and enjoy the beautiful and serene waters of Key West in a truly unique way! Building upon the success of the Original Tiki Suite, the 2021 Grand Tiki luxury model was designed and built with many improvements in quality including an artistic roof design, tempered peak windows, Ipe hardwood deck and flooring, an automatic-start generator charging system, 50" LED TV and Blu-ray player hidden in the footboard of the custom oak bed, handmade king-size mattress, integrated blinds in the French doors, oak and reed glass bathroom pocket door, expanded 30 gallon per day fresh water tank, electric mini refrigerator, plus underwater and exterior soffit lighting! As with the Original, the Grand also includes 2 inflatable paddleboards, 2 sets of snorkel gear, integrated swim ladder, a double hammock, voice-activated lighting throughout via Amazon's Alexa, mobile hotspot Wi-Fi (for browsing, not streaming video), air conditioning and heat, in-room shower, Keurig coffee maker and supplies, macerating toilet, 2.5 gallon electric hot water tank and of course all USCG required safety equipment. Come out and watch some of the world's most amazing sunsets from a secluded, unique accommodation and make a memory that will last a lifetime!`,
-        price: 699,
-        ownerId: 7,
-      },
     ])
   },
 

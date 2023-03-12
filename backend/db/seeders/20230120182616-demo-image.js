@@ -106,12 +106,6 @@ module.exports = {
         spotId: 8,
         reviewId: null,
       },
-      {
-        url: 'https://res.cloudinary.com/duakjbyfi/image/upload/v1678559241/AirBnB%20Clone/prevImgs/spot9_z71wmf.webp',
-        preview: true,
-        spotId: 9,
-        reviewId: null,
-      },
     ])
   },
 
