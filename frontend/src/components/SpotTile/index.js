@@ -1,6 +1,8 @@
 import './spotTile.css'
 
 const SpotTile = ({ spot }) => {
+    const rating = spot.avgRating.toFixed(2)
+    console.log(rating)
     return (
         <div className='tile'>
             <img className='tile-image' src={spot.previewImage} alt='spot'/>
@@ -11,7 +13,7 @@ const SpotTile = ({ spot }) => {
                 {
                     spot.avgRating === 0 ?
                     <p><i className="fa-solid fa-star"></i> New</p> :
-                    <p><i className="fa-solid fa-star"></i> {spot.avgRating.toFixed(2)}</p>
+                    <p><i className="fa-solid fa-star"></i> {rating}</p>
                 }
             </div>
         </div>
