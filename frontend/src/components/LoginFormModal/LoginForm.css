@@ -20,7 +20,13 @@
 }
 
 .modal-button {
-    width: 100%
+    width: 100%;
+    background-color: darkgray;
+}
+
+.delete {
+    width: 100%;
+    background-color: crimson;
 }
 
 .errors {

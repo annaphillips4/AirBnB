@@ -2,6 +2,7 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useParams } from "react-router-dom"
 import { deleteReview, fetchSpotReviews } from "../../store/reviews"
+import DeleteReviewModal from "../DeleteReviewModal"
 import OpenModalButton from "../OpenModalButton"
 import PostReviewModal from "../PostReviewModal"
 import ReviewTile from "../ReviewTile"
@@ -35,7 +36,7 @@ const SpotReviews = () => {
                     const usersReview = rev.userId === user?.id
                     return (
                         <div key={rev.id}><ReviewTile rev={rev} />
-                        {usersReview && <button onClick={() => {handleDelete(rev.id)}}>Delete</button>}
+                        {usersReview && <OpenModalButton buttonText='Delete' modalComponent={<DeleteReviewModal revId={rev.id} />}/>}
                         </div>
                     )
             })

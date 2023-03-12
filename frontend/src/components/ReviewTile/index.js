@@ -1,7 +1,11 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchSpotReviews } from '../../store/reviews';
 import './ReviewTile.css'
 
 const ReviewTile = ({rev}) => {
-    const year = rev.createdAt.slice(0,4)
+    const user = useSelector(state => state.session.user)
+    const year = rev?.createdAt.slice(0,4)
     let monthLetArr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'Septemper', 'October', 'November', 'December']
     let month;
     // console.log(rev.createdAt.slice(6,7))
@@ -11,11 +15,12 @@ const ReviewTile = ({rev}) => {
         month = monthLetArr[rev.createdAt.slice(5,7)-1]
     }
 
-    // console.log(month)
-
     return (
         <div className="review-tile">
-            <p><b>{rev.User.firstName}</b><br />{month} {year}<br />{rev.review}</p>
+            {!rev.User
+            ? <p><b>{user.firstName}</b><br />{month} {year}<br />{rev.review}</p>
+            : <p><b>{rev.User.firstName}</b><br />{month} {year}<br />{rev.review}</p>}
+
         </div>
     )
 }

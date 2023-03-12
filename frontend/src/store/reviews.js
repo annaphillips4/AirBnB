@@ -20,6 +20,7 @@ export const postReview = (payload, spotId) => async dispatch => {
     })
 
     const review = await response.json();
+    console.log(review)
     dispatch(submitReview(review))
     return review
 }

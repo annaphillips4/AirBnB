@@ -6,7 +6,7 @@
     background-color: white;
     border-radius: 10px;
     filter: drop-shadow(5px 5px 4px #A9A9A9);
-
+    z-index: 1;
 }
 
 .tile-image {
@@ -23,6 +23,12 @@
 
 .tile-rating {
     float: right;
-    margin-top: 25px;
+    /* margin-top: 10px; */
     margin-right: 20px;
+}
+
+.manage-buttons {
+    /* margin-top: 30px; */
+    margin-left: 275px;
+    z-index: 10
 }

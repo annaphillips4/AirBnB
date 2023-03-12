@@ -32,7 +32,7 @@ export const fetchUserSpots = () => async dispatch => {
 
     if(response.ok) {
         const payload = await response.json();
-
+        
         dispatch(loadUserSpots(payload.Spots))
     }
 }

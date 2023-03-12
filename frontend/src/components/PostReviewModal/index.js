@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import { postReview } from "../../store/reviews";
-
+import './PostReview.css'
 
 function PostReviewModal({spotId}) {
     const { closeModal } = useModal();
@@ -48,10 +48,11 @@ function PostReviewModal({spotId}) {
     }
 
     return (
-        <>
-            <h1>How was your stay?</h1>
+        <div className="modal">
+            <h1 className="form-header">How was your stay?</h1>
             <form onSubmit={handleSubmit}>
-                <input
+                <textarea
+                className="review-body"
                     type='text'
                     name='review'
                     placeholder="Leave your review here"
@@ -64,9 +65,9 @@ function PostReviewModal({spotId}) {
                 <i onClick={(e) => {handleStar(e, 3)}} className={stars < 3 ? "fa-regular fa-star" : "fa-solid fa-star"} />
                 <i onClick={(e) => {handleStar(e, 4)}} className={stars < 4 ? "fa-regular fa-star" : "fa-solid fa-star"} />
                 <i onClick={(e) => {handleStar(e, 5)}} className={stars < 5 ? "fa-regular fa-star" : "fa-solid fa-star"} />
-                <button type='submit' disabled={review.length < 10 || stars < 1}>Submit Your Review</button>
+                <button className="modal-button" type='submit' disabled={review.length < 10 || stars < 1}>Submit Your Review</button>
             </form>
-        </>
+        </div>
     )
 }
 

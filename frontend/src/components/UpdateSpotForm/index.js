@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom"
 import { fetchSpot, putSpot } from "../../store/spots";
+import '../SpotForm/SpotForm.css'
 
 const UpdateSpotForm = () => {
     const { spotId } = useParams()
@@ -72,11 +73,11 @@ const UpdateSpotForm = () => {
         setDescription(spot?.description)
         setName(spot?.name)
         setPrice(spot?.price)
-        setPrevImg(spot?.prevImg)
-        setImg1(spot?.img1)
-        setImg2(spot?.img3)
-        setImg3(spot?.img2)
-        setImg4(spot?.img4)
+        setPrevImg(spot?.SpotImages[0]?.url)
+        setImg1(spot?.SpotImages[1]?.url)
+        setImg2(spot?.SpotImages[2]?.url)
+        setImg3(spot?.SpotImages[3]?.url)
+        setImg4(spot?.SpotImages[4]?.url)
     }, [spot])
 
     const handleSubmit = async (e) => {
@@ -95,12 +96,7 @@ const UpdateSpotForm = () => {
             lng,
             description,
             name,
-            price,
-            // prevImg,
-            // img1,
-            // img2,
-            // img3,
-            // img4
+            price
         };
 
         let updatedSpot = await dispatch(putSpot(payload))
@@ -124,16 +120,17 @@ const UpdateSpotForm = () => {
     };
 
     return (
-        <div>
+        <div className="form">
             <form onSubmit={handleSubmit}>
-            <h1>Update Your Spot</h1>
-            <h2>Where's your place located?</h2>
+            <h1 className="form">Update Your Spot</h1>
+            <h2 className="form">Where's your place located?</h2>
             <p>Guests will only get your exact address once they booked a reservation.</p>
                 <label htmlFor='Country'>Country</label>
                 {hasSubmitted && !country && (
                     <label htmlFor='Country' className='field-error'>Country is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='Country'
                     placeholder="Country"
@@ -146,6 +143,7 @@ const UpdateSpotForm = () => {
                     <label htmlFor='Address' className='field-error'>Address is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='Address'
                     placeholder="Address"
@@ -158,6 +156,7 @@ const UpdateSpotForm = () => {
                     <label htmlFor='City' className='field-error'>City is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='City'
                     placeholder="City"
@@ -170,6 +169,7 @@ const UpdateSpotForm = () => {
                     <label htmlFor='State' className='field-error'>State is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='State'
                     placeholder="STATE"
@@ -182,6 +182,7 @@ const UpdateSpotForm = () => {
                     <label htmlFor='Latitude' className='field-error'>Latitude is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='Latitude'
                     placeholder="Latitude"
@@ -196,6 +197,7 @@ const UpdateSpotForm = () => {
                     <label htmlFor='Longitude' className='field-error'>Longitude is required</label>
                 )}
                 <input
+                    className="full"
                     type='text'
                     name='Longitude'
                     placeholder="Longitude"
@@ -207,8 +209,8 @@ const UpdateSpotForm = () => {
                 />
                 <h2>Describe your place to guests</h2>
                 <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
-                <input
-                    type='text'
+                <textarea
+                    className="desc"
                     name='Description'
                     placeholder="Please write at least 30 characters"
                     required={true}
@@ -222,6 +224,7 @@ const UpdateSpotForm = () => {
                 <h2>Create a title for your spot</h2>
                 <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
                 <input
+                    className="full"
                     type='text'
                     name='Name'
                     placeholder="Name of your spot"
@@ -234,7 +237,8 @@ const UpdateSpotForm = () => {
                 )}
                 <h2>Set a base price for your spot</h2>
                 <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
-                <input
+                $<input
+                    className="price"
                     type='text'
                     name='Price'
                     placeholder="Price per night (USD)"
@@ -248,6 +252,7 @@ const UpdateSpotForm = () => {
                 <h2>Liven up your spot with photos</h2>
                 <p>Submit a link to at least one photo to publish your spot.</p>
                 <input
+                    className="full"
                     type='url'
                     name='Preview Img'
                     placeholder="Preview Image URL"
@@ -259,24 +264,28 @@ const UpdateSpotForm = () => {
                     <label htmlFor='Preview Img' className='field-error'>Preview image is required</label>
                 )}
                 <input
+                    className="full"
                     type='url'
                     placeholder="Image URL"
                     value={img1}
                     onChange={updateImg1}
                 />
                 <input
+                    className="full"
                     type='url'
                     placeholder="Image URL"
                     value={img2}
                     onChange={updateImg2}
                 />
                 <input
+                    className="full"
                     type='url'
                     placeholder="Image URL"
                     value={img3}
                     onChange={updateImg3}
                 />
                 <input
+                    className="full"
                     type='url'
                     placeholder="Image URL"
                     value={img4}
