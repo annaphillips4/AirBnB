@@ -1,7 +1,7 @@
 import './spotTile.css'
 
 const SpotTile = ({ spot }) => {
-    const rating = spot.avgRating.toFixed(2)
+    const rating = (spot.avgRating).toFixed(2)
     console.log(rating)
     return (
         <div className='tile'>
