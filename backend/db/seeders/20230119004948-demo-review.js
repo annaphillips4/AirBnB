@@ -101,12 +101,6 @@ module.exports = {
         stars: 4,
       },
       {
-        userId: 1,
-        spotId: 4,
-        review: `Sample review text.`,
-        stars: 4,
-      },
-      {
         userId: 3,
         spotId: 4,
         review: `Sample review text.`,

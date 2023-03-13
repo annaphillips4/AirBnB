@@ -20,7 +20,6 @@ const ManageSpotsIndex = () => {
         history.push(`/spots/${spotId}/edit`)
     }
 
-
     return (
         <div>
             <h1>Manage Spots</h1>

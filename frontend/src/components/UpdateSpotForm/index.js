@@ -21,11 +21,11 @@ const UpdateSpotForm = () => {
     const [description, setDescription] = useState('');
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
-    const [prevImg, setPrevImg] = useState('');
-    const [img1, setImg1] = useState('');
-    const [img3, setImg2] = useState('');
-    const [img2, setImg3] = useState('');
-    const [img4, setImg4] = useState('');
+    // const [prevImg, setPrevImg] = useState('');
+    // const [img1, setImg1] = useState('');
+    // const [img3, setImg2] = useState('');
+    // const [img2, setImg3] = useState('');
+    // const [img4, setImg4] = useState('');
 
     const updateCountry = (e) => setCountry(e.target.value);
     const updateAddress = (e) => setAddress(e.target.value);
@@ -36,11 +36,11 @@ const UpdateSpotForm = () => {
     const updateDescription = (e) => setDescription(e.target.value);
     const updateName = (e) => setName(e.target.value);
     const updatePrice = (e) => setPrice(e.target.value);
-    const updatePrevImg = (e) => setPrevImg(e.target.value);
-    const updateImg1 = (e) => setImg1(e.target.value);
-    const updateImg2 = (e) => setImg2(e.target.value);
-    const updateImg3 = (e) => setImg3(e.target.value);
-    const updateImg4 = (e) => setImg4(e.target.value);
+    // const updatePrevImg = (e) => setPrevImg(e.target.value);
+    // const updateImg1 = (e) => setImg1(e.target.value);
+    // const updateImg2 = (e) => setImg2(e.target.value);
+    // const updateImg3 = (e) => setImg3(e.target.value);
+    // const updateImg4 = (e) => setImg4(e.target.value);
 
     useEffect(() => {
         const errors = [];
@@ -53,10 +53,11 @@ const UpdateSpotForm = () => {
         if(!description?.length) errors.push('Description is required')
         if(!name?.length) errors.push('Name is required')
         if(!Number(price)) errors.push('Price is required')
-        if(!prevImg?.length) errors.push('Preview Image is required')
+        // if(!prevImg?.length) errors.push('Preview Image is required')
         setValidationErrors(errors)
-    }, [country, city, address, state, lat, lng, description, name, price, prevImg])
+    }, [country, city, address, state, lat, lng, description, name, price])
 
+    // console.log(`HELLOOOOOO`)
     useEffect(() => {
         // if(!spot) {
             dispatch(fetchSpot(spotId))
@@ -73,11 +74,11 @@ const UpdateSpotForm = () => {
         setDescription(spot?.description)
         setName(spot?.name)
         setPrice(spot?.price)
-        setPrevImg(spot?.SpotImages[0].url)
-        setImg1(spot?.SpotImages[1].url)
-        setImg2(spot?.SpotImages[2].url)
-        setImg3(spot?.SpotImages[3].url)
-        setImg4(spot?.SpotImages[4].url)
+        // setPrevImg(spot?.SpotImages[0]?.url)
+        // setImg1(spot?.SpotImages[1]?.url)
+        // setImg2(spot?.SpotImages[2]?.url)
+        // setImg3(spot?.SpotImages[3]?.url)
+        // setImg4(spot?.SpotImages[4]?.url)
     }, [spot])
 
     const handleSubmit = async (e) => {
@@ -104,14 +105,14 @@ const UpdateSpotForm = () => {
         setCity('');
         setCountry('');
         setDescription('');
-        setImg1('');
-        setImg2('');
-        setImg3('');
-        setImg4('');
+        // setImg1('');
+        // setImg2('');
+        // setImg3('');
+        // setImg4('');
         setLat('');
         setLng('');
         setName('');
-        setPrevImg('');
+        // setPrevImg('');
         setPrice('');
         setHasSubmitted(false);
         if (updatedSpot) {
@@ -249,7 +250,7 @@ const UpdateSpotForm = () => {
                 {hasSubmitted && !price && (
                     <label htmlFor='Price' className='field-error'>Price is required</label>
                 )}
-                <h2>Liven up your spot with photos</h2>
+                {/* <h2>Liven up your spot with photos</h2>
                 <p>Submit a link to at least one photo to publish your spot.</p>
                 <input
                     className="full"
@@ -290,7 +291,7 @@ const UpdateSpotForm = () => {
                     placeholder="Image URL"
                     value={img4}
                     onChange={updateImg4}
-                />
+                /> */}
                 <button type="submit">Update Spot</button>
             </form>
         </div>

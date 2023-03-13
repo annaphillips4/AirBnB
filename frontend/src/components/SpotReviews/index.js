@@ -24,6 +24,8 @@ const SpotReviews = () => {
         dispatch(deleteReview(revId))
     }
 
+    console.log(!alreadyReviewed)
+
     return (
         <div>
             {spot?.ownerId !== user?.id &&
