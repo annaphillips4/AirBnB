@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
-import { postReview } from "../../store/reviews";
+import { fetchSpotReviews, postReview } from "../../store/reviews";
+import { fetchSpot } from "../../store/spots";
 import './PostReview.css'
 
 function PostReviewModal({spotId}) {
@@ -43,7 +44,9 @@ function PostReviewModal({spotId}) {
         setStars(0)
         setHasSubmitted(false)
         if (newReview) {
-            closeModal()
+            await dispatch(fetchSpotReviews(spotId))
+            await dispatch(fetchSpot(spotId))
+            .then(closeModal())
         }
     }
 

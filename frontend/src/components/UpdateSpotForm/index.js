@@ -57,11 +57,8 @@ const UpdateSpotForm = () => {
         setValidationErrors(errors)
     }, [country, city, address, state, lat, lng, description, name, price])
 
-    // console.log(`HELLOOOOOO`)
     useEffect(() => {
-        // if(!spot) {
             dispatch(fetchSpot(spotId))
-        // }
     }, [dispatch])
 
     useEffect(() => {

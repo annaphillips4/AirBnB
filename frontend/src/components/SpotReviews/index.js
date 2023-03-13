@@ -24,8 +24,6 @@ const SpotReviews = () => {
         dispatch(deleteReview(revId))
     }
 
-    console.log(!alreadyReviewed)
-
     return (
         <div>
             {spot?.ownerId !== user?.id &&
@@ -38,7 +36,7 @@ const SpotReviews = () => {
                     const usersReview = rev.userId === user?.id
                     return (
                         <div key={rev.id}><ReviewTile rev={rev} />
-                        {usersReview && <OpenModalButton buttonText='Delete' modalComponent={<DeleteReviewModal revId={rev.id} />}/>}
+                        {usersReview && <OpenModalButton buttonText='Delete' modalComponent={<DeleteReviewModal revId={rev.id} spotId={spotId} />}/>}
                         </div>
                     )
             })

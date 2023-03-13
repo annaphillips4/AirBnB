@@ -1,10 +1,11 @@
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useModal } from "../../context/Modal"
-import { deleteReview } from "../../store/reviews";
+import { deleteReview, fetchSpotReviews } from "../../store/reviews";
 import { deleteSpot, fetchUserSpots } from "../../store/spots";
+import { fetchSpot } from "../../store/spots";
 
-function DeleteReviewModal({ revId }) {
+function DeleteReviewModal({ revId, spotId }) {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
     const history = useHistory();
@@ -12,6 +13,7 @@ function DeleteReviewModal({ revId }) {
     const handleDelete = async (e) => {
         e.preventDefault();
         await dispatch(deleteReview(revId))
+        await dispatch(fetchSpot(spotId))
         .then(closeModal())
         // history.go(0)
 
