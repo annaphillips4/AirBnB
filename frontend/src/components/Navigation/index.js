@@ -1,14 +1,21 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+import * as sessionActions from "../../store/session";
 import './Navigation.css';
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
+
+  const dispatch = useDispatch()
+  const handleDemo = (e) =>{
+    e.preventDefault();
+    return dispatch(sessionActions.login({ credential:'Demo-lition', password:'password' }))
+  }
 
   let sessionLinks;
   if (sessionUser) {
@@ -17,7 +24,7 @@ function Navigation({ isLoaded }){
         <li>
           <Link to='/spots/new'>Create a New Spot</Link>
         </li>
-        <li>
+        <li >
           <ProfileButton user={sessionUser} />
         </li>
       </div>
@@ -45,6 +52,9 @@ function Navigation({ isLoaded }){
       <NavLink exact to="/" className='home'><img src='https://res.cloudinary.com/duakjbyfi/image/upload/v1678545268/AirBnB%20Clone/logo_browser.psd_vhyhya.png' /></NavLink>
       <ul className='nav'>
         {isLoaded && sessionLinks}
+        {!sessionUser
+        ? <li className="nav-button"><button onClick={handleDemo}>Demo Login</button></li>
+        : <></>}
       </ul>
     </div>
   );

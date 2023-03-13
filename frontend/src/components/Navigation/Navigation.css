@@ -4,9 +4,12 @@
 
 .navBar {
     width: 100%;
+    top: 0px;
     height: 50px;
     padding: 10px;
     background-color: white;
+    position: sticky;
+    z-index: 1;
 }
 
 .home {
@@ -16,5 +19,18 @@
 .nav {
     position: fixed;
     right: 10px;
-    top: 0;
+    top: 6px;
+    list-style-type: none;
+}
+
+ul.nav > li {
+    display: inline-block;
+    margin: 0px 3px
+}
+
+.profile-dropdown {
+    background-color: white;
+    padding: 10px;
+    border-radius: 2px;
+    list-style-type: none;
 }
