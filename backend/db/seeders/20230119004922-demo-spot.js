@@ -78,7 +78,7 @@ module.exports = {
       {
         address: '323 St. Theresas Close',
         city: 'Yellowknife',
-        state: 'Northwest Territories',
+        state: 'NW Territories',
         country: 'Canada',
         lat: 35.5403,
         lng: 79.7480,

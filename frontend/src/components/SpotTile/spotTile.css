@@ -1,34 +1,39 @@
 .tile {
-    height: 460px;
-    width: 380px;
+    width: 100%;
     margin: 10px;
     display: inline-block;
     background-color: white;
     border-radius: 10px;
-    filter: drop-shadow(5px 5px 4px #A9A9A9);
-    z-index: 1;
+    color: black;
 }
 
 .tile-image {
-    width: 380px;
-    height: 380px;
+    width: 100%;
+    aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 10px;
 }
 
-.spot-info {
-    position: absolute;
-    margin-left: 20px;
+.tile-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
-.tile-rating {
-    float: right;
-    /* margin-top: 10px; */
-    margin-right: 20px;
+.tile-name {
+    margin: 0;
+    font-weight: 600;
+}
+
+.tile-rating p {
+    margin: 0;
+}
+
+.spot-price {
+    margin-top: 0;
 }
 
 .manage-buttons {
-    /* margin-top: 30px; */
     margin-left: 275px;
-    z-index: 10
+    z-index: 10;
 }
