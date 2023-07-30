@@ -99,7 +99,7 @@ const SpotForm = () => {
     return (
         <div className="form">
             <form onSubmit={handleSubmit}>
-            <h1 className="form">Create a New Spot</h1>
+            <h1 className="form">Airbnb it.</h1>
             <h2 className="form">Where's your place located?</h2>
             <p>Guests will only get your exact address once they booked a reservation.</p>
                 <label htmlFor='Country'>Country</label>
