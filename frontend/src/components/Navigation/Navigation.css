@@ -15,6 +15,7 @@
 .nav-right-container {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
 }
 
 .user-icon {
@@ -45,9 +46,37 @@
     padding: 10px 15px;
     border: 0px;
     border-radius: 25px;
+    text-decoration: none;
 }
 
 .your-home:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+
+.nav {
+    list-style: none;
+    position: absolute;
+    top: 70px;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 10px 0;
+    border-radius: 10px;
+    width: 250px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.nav-button button {
+    background-color: #ffffff;
+    border: none;
+    width: 100%;
+    padding: 10px 20px;
+    margin: 0;
+    text-align: left;
+}
+
+.nav-button button:hover {
     background-color: #f5f5f5;
     cursor: pointer;
 }
