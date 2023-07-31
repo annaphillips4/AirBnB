@@ -76,7 +76,15 @@ function Navigation({ isLoaded }) {
     <div className='navbar'>
       <NavLink exact to="/" className='home'><img src='https://res.cloudinary.com/duakjbyfi/image/upload/v1678545268/AirBnB%20Clone/logo_browser.psd_vhyhya.png' /></NavLink>
       <div className='nav-right-container'>
-        <NavLink exact to="/spots/new" className='your-home'>Airbnb your home</NavLink>
+        {sessionUser ?
+          <NavLink exact to="/spots/new" className='your-home'>Airbnb your home</NavLink> :
+          <div className='your-home-button'>
+            <OpenModalButton
+              buttonText="Airbnb your home"
+              modalComponent={<SignupFormModal />}
+            />
+          </div>
+        }
         <div className='user-icon' onClick={toggleShowNav}>
           <i class="fa-solid fa-bars" style={{ fontSize: '15px' }} />
           <i class="fa-solid fa-circle-user" />
