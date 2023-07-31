@@ -60,20 +60,38 @@ a {
     margin-top: 0;
 }
 
-.info {
-    width: 70%;
-    display: inline-block;
+.spot-details {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-column-gap: 20px;
 }
 
-.detailscard {
-    width: 25%;
-    display: inline-block;
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 0 10px
+.info {
+    grid-column: span 1;
+}
+
+.card-column {
+    grid-column: span 1;
+    padding-top: 20px;
+}
+
+.card {
+    border: 1px solid #dddddd;
+    border-radius: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    padding: 0 25px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 100px;
 }
 
 .review-container {
     width: 100%;
     border-top: 1px solid black;
+}
+
+p em {
+    font-size: x-large;
+    font-style: normal;
+    font-weight: 500;
 }

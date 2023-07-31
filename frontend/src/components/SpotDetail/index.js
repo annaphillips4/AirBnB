@@ -29,27 +29,31 @@ const SpotDetail = () => {
                     }
                 })}
             </div>
+            <div className="spot-details">
+                <div className="info">
+                    <h1>Hosted by {spot?.Owner?.firstName} {spot?.Owner?.lastName}</h1>
+                    <p>{spot?.description}</p>
+                </div>
 
-            <div className="info">
-                <h1>Hosted by {spot?.Owner?.firstName} {spot?.Owner?.lastName}</h1>
-                <p>{spot?.description}</p>
+                <div className='card-column'>
+                    <div className="card">
+                        <p><em>${spot?.price}</em> night</p>
+                        {
+                            reviewCount === 0 ?
+                                <p><i className="fa-solid fa-star"></i> New</p> :
+                                <p><i className="fa-solid fa-star"></i> {rating} · {reviewCount} {reviewCount > 1 ? 'Reviews' : 'Review'}</p>
+                        }
+                    </div>
+                </div>
             </div>
-            <div className='detailscard'>
-                <p>${spot?.price} night</p>
-                {
-                    reviewCount === 0 ?
-                        <p><i className="fa-solid fa-star"></i> New</p> :
-                        <p><i className="fa-solid fa-star"></i> {rating} · {reviewCount} {reviewCount > 1 ? 'Reviews' : 'Review'}</p>
-                }
-            </div>
-            <div className="review-container" id="reviews">
-                {
-                    reviewCount === 0 ?
-                        <p><i className="fa-solid fa-star"></i> New</p> :
-                        <p><i className="fa-solid fa-star"></i> {rating} · {reviewCount} {reviewCount > 1 ? 'Reviews' : 'Review'}</p>
-                }
-                <SpotReviews />
-            </div>
+                <div className="review-container" id="reviews">
+                    {
+                        reviewCount === 0 ?
+                            <p><i className="fa-solid fa-star"></i> New</p> :
+                            <p><i className="fa-solid fa-star"></i> {rating} · {reviewCount} {reviewCount > 1 ? 'Reviews' : 'Review'}</p>
+                    }
+                    <SpotReviews />
+                </div>
         </div>
     )
 }
