@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
@@ -18,17 +18,22 @@ function Navigation({ isLoaded }) {
     return dispatch(sessionActions.login({ credential: 'Demo-lition', password: 'password' }))
   }
 
+  const logout = (e) => {
+    e.preventDefault();
+    dispatch(sessionActions.logout());
+  };
+
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <div>
-        <li>
-          <Link to='/spots/new'>Create a New Spot</Link>
-        </li>
-        <li >
-          <ProfileButton user={sessionUser} />
-        </li>
-      </div>
+      <>
+        <li className='nav-info'>{sessionUser.username}</li>
+        <li className='nav-info'>{sessionUser.firstName} {sessionUser.lastName}</li>
+        <li className='nav-info'>{sessionUser.email}</li>
+        <li className='nav-link'><Link to='/spots/current'>Manage Spots</Link></li>
+        <li className='nav-link'><Link to='/spots/new'>Create a New Spot</Link></li>
+        <li className='nav-button'><button onClick={logout}>Log Out</button></li>
+      </>
     );
   } else {
     sessionLinks = (
@@ -77,12 +82,12 @@ function Navigation({ isLoaded }) {
           <i class="fa-solid fa-circle-user" />
         </div>
         {showNav &&
-        <ul className='nav'>
-        {isLoaded && sessionLinks}
-        {!sessionUser
-        ? <li className="nav-button"><button onClick={handleDemo}>Demo Login</button></li>
-        : <></>}
-      </ul>}
+          <ul className='nav'>
+            {isLoaded && sessionLinks}
+            {!sessionUser
+              ? <li className="nav-button"><button onClick={handleDemo}>Demo Login</button></li>
+              : <></>}
+          </ul>}
       </div>
     </div>
   );
