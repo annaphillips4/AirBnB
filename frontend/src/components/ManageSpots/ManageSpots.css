@@ -4,3 +4,29 @@
     margin: 10px;
 }
 
+.manage-buttons {
+    border: none;
+    padding: 10px 0px;
+    width: 45%;
+    border-radius: 7px;
+    margin: 0 2%;
+    background-color: #ff385c;
+    color: #ffffff;
+    font-weight: bolder;
+}
+
+
+.manage-modal button {
+    border: none;
+    padding: 10px 0px;
+    width: 45%;
+    border-radius: 7px;
+    margin: 0 2%;
+    background-color: #ff385c;
+    color: #ffffff;
+    font-weight: bolder;
+}
+
+.manage-buttons:hover, .manage-modal button:hover {
+    cursor: pointer;
+}

@@ -22,27 +22,29 @@ const ManageSpotsIndex = () => {
 
     return (
         <div>
-            <h1>Manage Spots</h1>
+        <h1 className="form">Manage your spots</h1>
             {!Object.values(spots) ?
                 <Link to='/spots/new'>Create a New Spot</Link>
                 :
-                <ul>
+                <div className='spot-container'>
                     {
                         Object.values(spots).map(spot => (
                             <div className='manage-tiles' key={spot.id}>
                                 <Link to={`/spots/${spot.id}`} key={spot.id}>
-                                <SpotTile spot={spot} />
+                                    <SpotTile spot={spot} />
                                 </Link>
-                                <br/>
-                                <button onClick={()=>{handleUpdate(spot.id)}}>Update</button>
-                                <OpenModalButton
+                                <br />
+                                <button className='manage-buttons' onClick={() => { handleUpdate(spot.id) }}>Update</button>
+                                <span className='manage-modal'>
+                                    <OpenModalButton
                                     buttonText="Delete"
                                     modalComponent={<ConfirmDeleteModal spotId={spot.id} />}
                                 />
+                                </span>
                             </div>
                         ))
                     }
-                </ul>
+                </div>
             }
         </div>
     )
